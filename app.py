@@ -5,7 +5,6 @@ import random
 import google.generativeai as genai
 from datetime import datetime
 import secrets
-from pyngrok import ngrok
 import PyPDF2
 
 API_KEY = "AIzaSyDsN-HoFzthjs4tU2qjLLf5mjLB6gpDSA8"
@@ -1154,16 +1153,11 @@ if __name__ == '__main__':
     
     port = 5000
     
-    try:
-        public_url = ngrok.connect(port)
-        print('=' * 70)
-        print(f'NGROK PUBLIC URL: {public_url}')
-        print('=' * 70)
-        print(f'Share link nay de nguoi khac test web cua ban!')
-        print(f'Local URL: http://localhost:{port}')
-        print('=' * 70)
-    except Exception as e:
-        print(f"Khong the khoi dong ngrok: {e}")
-        print("Chay o che do local only...")
+    print('=' * 70)
+    print(f'Local URL: http://localhost:{port}')
+    print(f'Network URL: http://0.0.0.0:{port}')
+    print('=' * 70)
+    print('Server đang chạy...')
+    print('=' * 70)
     
     app.run(debug=True, host='0.0.0.0', port=port)
