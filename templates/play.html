@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Câu hỏi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            transition: width 0.3s ease;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.2);
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .timer {
+            font-size: 2em;
+            color: #ffeb3b;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .timer.warning {
+            color: #ff5252;
+            animation: pulse 0.5s infinite;
+        }
+
+        .question-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .question-box h3 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        button {
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .question-box {
+                padding: 25px;
+            }
+
+            .question-box h3 {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ (index + 1) / total * 100 }}%"></div>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    Câu {{ index + 1 }}/{{ total }}
+                </div>
+                <div class="stat-item">
+                    <div class="timer" id="timer">15</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <h3>{{ question["question"] }}</h3>
+            
+            <form id="quizForm" method="POST" action="/next">
+                <div class="options-grid">
+                    <button type="submit" name="answer" value="A">A. {{ question["A"] }}</button>
+                    <button type="submit" name="answer" value="B">B. {{ question["B"] }}</button>
+                    <button type="submit" name="answer" value="C">C. {{ question["C"] }}</button>
+                    <button type="submit" name="answer" value="D">D. {{ question["D"] }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let timeLeft = 15;
+        const timerElement = document.getElementById("timer");
+        const form = document.getElementById("quizForm");
+
+        const countdown = setInterval(() => {
+            timeLeft--;
+            timerElement.textContent = timeLeft;
+            
+            if (timeLeft <= 5) {
+                timerElement.classList.add('warning');
+            }
+            
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                form.submit();
+            }
+        }, 1000);
+
+        form.addEventListener('submit', function() {
+            clearInterval(countdown);
+        });
+    </script>
+</body>
+</html>

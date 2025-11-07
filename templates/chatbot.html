@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot AI - Trợ lý học tập thông minh</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .chat-wrapper {
+            width: 100%;
+            max-width: 1000px;
+            height: 90vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bot-avatar {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .bot-info h2 {
+            font-size: 1.3em;
+            margin-bottom: 3px;
+        }
+
+        .bot-info p {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-header {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-header:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .subject-selector {
+            padding: 20px 25px;
+            border-bottom: 1px solid #e0e0e0;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .subject-selector.hidden {
+            display: none;
+        }
+
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .subject-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            user-select: none;
+        }
+
+        .subject-card:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .subject-card.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .subject-card .icon {
+            font-size: 2.5em;
+            margin-bottom: 8px;
+        }
+
+        .subject-card .name {
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px;
+            background: #f5f7fa;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            flex-shrink: 0;
+        }
+
+        .message.bot .message-avatar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .message.user .message-avatar {
+            background: #28a745;
+            color: white;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 15px 18px;
+            border-radius: 18px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .message.bot .message-content {
+            background: white;
+            color: #333;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message-meta {
+            font-size: 0.75em;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        .pdf-badge {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-top: 8px;
+        }
+
+        .typing-indicator {
+            display: none;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .typing-indicator.active {
+            display: flex;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+            padding: 15px 18px;
+            background: white;
+            border-radius: 18px;
+            border-bottom-left-radius: 4px;
+        }
+
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            background: #667eea;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        .welcome-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .welcome-screen .icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+        }
+
+        .welcome-screen h3 {
+            color: #333;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .welcome-screen p {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+
+        .input-area {
+            padding: 20px 25px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .input-form {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        #questionInput {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        #questionInput:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .send-btn {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .send-btn:hover:not(:disabled) {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .send-btn:active {
+            transform: scale(0.95);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px 18px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border-left: 4px solid #f5c6cb;
+            animation: slideIn 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .chat-wrapper {
+                height: 100vh;
+                border-radius: 0;
+            }
+
+            .bot-info h2 {
+                font-size: 1.1em;
+            }
+
+            .bot-info p {
+                font-size: 0.8em;
+            }
+
+            .subject-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .message-content {
+                max-width: 85%;
+            }
+
+            .welcome-screen h3 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-wrapper">
+        <div class="chat-header">
+            <div class="header-left">
+                <div class="bot-avatar" id="headerIcon">🤖</div>
+                <div class="bot-info">
+                    <h2 id="headerTitle">Chatbot AI Học Tập</h2>
+                    <p id="headerDesc">Chọn môn học để bắt đầu</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <a href="/" class="btn-header">← Trang chủ</a>
+            </div>
+        </div>
+
+        <div class="subject-selector" id="subjectSelector">
+            <h3 style="margin-bottom: 5px; color: #333;">Chọn môn học bạn muốn hỏi</h3>
+            <div class="subject-grid">
+                <div class="subject-card" data-subject="toan">
+                    <div class="icon">📐</div>
+                    <div class="name">Toán học</div>
+                </div>
+                <div class="subject-card" data-subject="ly">
+                    <div class="icon">⚡</div>
+                    <div class="name">Vật Lý</div>
+                </div>
+                <div class="subject-card" data-subject="hoa">
+                    <div class="icon">🧪</div>
+                    <div class="name">Hóa Học</div>
+                </div>
+                <div class="subject-card" data-subject="sinh">
+                    <div class="icon">🌿</div>
+                    <div class="name">Sinh Học</div>
+                </div>
+                <div class="subject-card" data-subject="tong" style="grid-column: span 2;">
+                    <div class="icon">🎓</div>
+                    <div class="name">Tổng Hợp</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="messages-container" id="messagesContainer">
+            <div class="welcome-screen" id="welcomeScreen">
+                <div class="icon">🎓</div>
+                <h3>Xin chào! Tôi là trợ lý AI học tập</h3>
+                <p>Chọn môn học ở trên để bắt đầu hỏi đáp với tôi</p>
+            </div>
+
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="message-avatar">🤖</div>
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <form class="input-form" id="chatForm">
+                <div class="input-wrapper">
+                    <input type="text" 
+                           name="question" 
+                           id="questionInput" 
+                           placeholder="Nhập câu hỏi của bạn..." 
+                           autocomplete="off"
+                           disabled>
+                </div>
+                <button type="submit" class="send-btn" id="sendBtn" disabled>
+                    ➤
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const subjectData = {
+            'toan': { icon: '📐', title: 'Chatbot Toán học', desc: 'Giải Đại số & Hình học lớp 8' },
+            'ly': { icon: '⚡', title: 'Chatbot Vật Lý', desc: 'Giải Cơ - Nhiệt - Điện - Quang' },
+            'hoa': { icon: '🧪', title: 'Chatbot Hóa học', desc: 'Hóa học & Phương trình' },
+            'sinh': { icon: '🌿', title: 'Chatbot Sinh học', desc: 'Sinh học & Sức khỏe' },
+            'tong': { icon: '🎓', title: 'Chatbot Tổng hợp', desc: 'Trả lời mọi câu hỏi' }
+        };
+
+        let currentSubject = null;
+        let isProcessing = false;
+
+        // Select subject
+        function selectSubject(subject) {
+            currentSubject = subject;
+            const data = subjectData[subject];
+            
+            // Update header
+            document.getElementById('headerIcon').textContent = data.icon;
+            document.getElementById('headerTitle').textContent = data.title;
+            document.getElementById('headerDesc').textContent = data.desc;
+
+            // Mark active card
+            document.querySelectorAll('.subject-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            document.querySelector(`[data-subject="${subject}"]`).classList.add('active');
+
+            // Hide selector and welcome screen
+            document.getElementById('subjectSelector').classList.add('hidden');
+            document.getElementById('welcomeScreen').style.display = 'none';
+            
+            // Enable input
+            document.getElementById('questionInput').disabled = false;
+            document.getElementById('questionInput').focus();
+            document.getElementById('sendBtn').disabled = false;
+
+            // Add welcome message
+            addBotMessage(`Xin chào! Tôi là trợ lý ${data.title}. Bạn có thể hỏi tôi bất cứ điều gì về ${data.desc.toLowerCase()}. Hãy bắt đầu nhé! 😊`);
+        }
+
+        // Add user message
+        function addUserMessage(text) {
+            const container = document.getElementById('messagesContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user';
+            messageDiv.innerHTML = `
+                <div class="message-avatar">👤</div>
+                <div class="message-content">${escapeHtml(text)}<div class="message-meta">${getCurrentTime()}</div>
+                </div>
+            `;
+            container.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        // Add bot message
+        function addBotMessage(text, pdfCount = 0) {
+            const container = document.getElementById('messagesContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message bot';
+            
+            let pdfBadge = '';
+            if (pdfCount > 0) {
+                pdfBadge = `<div class="pdf-badge">📚 Đã tham khảo ${pdfCount} tài liệu</div>`;
+            }
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${subjectData[currentSubject]?.icon || '🤖'}</div>
+                <div class="message-content">${escapeHtml(text)}${pdfBadge}<div class="message-meta">${getCurrentTime()}</div>
+                </div>
+            `;
+            container.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        // Add error message
+        function addErrorMessage(text) {
+            const container = document.getElementById('messagesContainer');
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = '⚠️ ' + text;
+            container.appendChild(errorDiv);
+            scrollToBottom();
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 5000);
+        }
+
+        // Show/hide typing indicator
+        function showTyping() {
+            document.getElementById('typingIndicator').classList.add('active');
+            scrollToBottom();
+        }
+
+        function hideTyping() {
+            document.getElementById('typingIndicator').classList.remove('active');
+        }
+
+        // Utility functions
+        function scrollToBottom() {
+            const container = document.getElementById('messagesContainer');
+            setTimeout(() => {
+                container.scrollTop = container.scrollHeight;
+            }, 100);
+        }
+
+        function getCurrentTime() {
+            const now = new Date();
+            return now.getHours().toString().padStart(2, '0') + ':' + 
+                   now.getMinutes().toString().padStart(2, '0');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Subject card click handlers
+        document.querySelectorAll('.subject-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const subject = this.getAttribute('data-subject');
+                selectSubject(subject);
+            });
+        });
+
+        // Form submission with fetch
+        document.getElementById('chatForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (isProcessing) return;
+            
+            const questionInput = document.getElementById('questionInput');
+            const question = questionInput.value.trim();
+            
+            if (!currentSubject) {
+                addErrorMessage('Vui lòng chọn môn học trước!');
+                return;
+            }
+
+            if (!question) {
+                addErrorMessage('Vui lòng nhập câu hỏi!');
+                return;
+            }
+
+            // Add user message
+            addUserMessage(question);
+            
+            // Clear input
+            questionInput.value = '';
+            
+            // Show typing indicator
+            showTyping();
+            isProcessing = true;
+            
+            // Disable inputs
+            document.getElementById('sendBtn').disabled = true;
+            questionInput.disabled = true;
+            
+            try {
+                // Send POST request
+                const formData = new FormData();
+                formData.append('question', question);
+                formData.append('subject', currentSubject);
+                
+                const response = await fetch('/chatbot', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                hideTyping();
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const contentType = response.headers.get('content-type');
+                
+                if (contentType && contentType.includes('application/json')) {
+                    // JSON response
+                    const data = await response.json();
+                    if (data.answer) {
+                        addBotMessage(data.answer, data.pdf_count || 0);
+                    } else {
+                        addErrorMessage('Không nhận được câu trả lời từ server');
+                    }
+                } else {
+                    // HTML response - parse it
+                    const html = await response.text();
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    
+                    // Try to extract answer from various possible locations
+                    let answer = null;
+                    
+                    // Method 1: Look for a specific answer element
+                    const answerEl = doc.querySelector('[data-answer]');
+                    if (answerEl) {
+                        answer = answerEl.getAttribute('data-answer');
+                    }
+                    
+                    // Method 2: Look for answer in script tag
+                    if (!answer) {
+                        const scripts = doc.querySelectorAll('script');
+                        scripts.forEach(script => {
+                            const match = script.textContent.match(/flaskAnswer\s*=\s*"([^"]*)"/);
+                            if (match) answer = match[1];
+                        });
+                    }
+                    
+                    // Method 3: Parse from template variable
+                    if (!answer) {
+                        const match = html.match(/const\s+flaskAnswer\s*=\s*({[^;]+});/);
+                        if (match) {
+                            try {
+                                const data = JSON.parse(match[1]);
+                                answer = data;
+                            } catch(e) {}
+                        }
+                    }
+                    
+                    if (answer && answer !== '' && answer !== 'None' && answer !== '{}') {
+                        addBotMessage(answer, 0);
+                    } else {
+                        addErrorMessage('Không nhận được câu trả lời hợp lệ. Vui lòng thử lại!');
+                    }
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                hideTyping();
+                addErrorMessage('Đã xảy ra lỗi khi kết nối với server: ' + error.message);
+            } finally {
+                // Re-enable inputs
+                isProcessing = false;
+                document.getElementById('sendBtn').disabled = false;
+                questionInput.disabled = false;
+                questionInput.focus();
+            }
+        });
+
+        // Enter key to send
+        document.getElementById('questionInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey && !isProcessing) {
+                e.preventDefault();
+                document.getElementById('chatForm').dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+</body>
+</html>

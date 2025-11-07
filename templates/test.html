@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài kiểm tra 15 phút</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-5px);
+        }
+
+        .content-box {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .content-box h3 {
+            color: #667eea;
+            margin-bottom: 25px;
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            display: block;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            text-decoration: none;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .option-btn:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .test-form {
+            text-align: left;
+        }
+
+        .question-item {
+            background: #f5f7fa;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .question-item p {
+            color: #333;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .question-item strong {
+            color: #667eea;
+        }
+
+        .answer-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .answer-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .answer-option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .answer-option input[type="radio"] {
+            margin-right: 10px;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+
+        .answer-option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 0.95em;
+        }
+
+        .answer-option input[type="radio"]:checked + label {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .result-box {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+            animation: slideDown 0.5s ease;
+        }
+
+        .result-box h3 {
+            color: white;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .result-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.2);
+            padding: 15px 25px;
+            border-radius: 10px;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .wrong-answers {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .wrong-answers h4 {
+            color: #856404;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .wrong-item {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #dc3545;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .wrong-item p {
+            margin: 8px 0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .wrong-item .label {
+            font-weight: bold;
+            color: #666;
+        }
+
+        .wrong-item .answers-display {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .wrong-item .answers-display div {
+            margin: 3px 0;
+            font-size: 0.9em;
+            padding: 3px 0;
+        }
+
+        .correct-answer-highlight {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .wrong-answer-highlight {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        /* Phần giải thích mới */
+        .explanation-box {
+            margin-top: 15px;
+            padding: 15px;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 8px;
+            border-left: 4px solid #2196F3;
+        }
+
+        .explanation-box .explanation-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: #1976D2;
+            font-weight: bold;
+            font-size: 1.05em;
+        }
+
+        .explanation-box .explanation-header::before {
+            content: "💡";
+            font-size: 1.3em;
+            margin-right: 8px;
+        }
+
+        .explanation-box .explanation-text {
+            color: #0d47a1;
+            line-height: 1.7;
+            font-size: 0.95em;
+        }
+
+        .perfect-score {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+            animation: pulse 2s infinite;
+        }
+
+        .perfect-score h4 {
+            color: white;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .perfect-score p {
+            color: white;
+            font-size: 1.1em;
+        }
+
+        .perfect-score::before {
+            content: "🏆";
+            font-size: 3em;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.02);
+            }
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .action-buttons a,
+        .action-buttons button {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .content-box {
+                padding: 25px;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .answer-options {
+                grid-template-columns: 1fr;
+            }
+
+            .result-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .action-buttons a,
+            .action-buttons button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-btn">← Quay lại trang chủ</a>
+
+        <div class="header">
+            <h1>📝 Bài kiểm tra 15 phút</h1>
+            <p>Kiểm tra kiến thức và nhận kết quả chi tiết với giải thích</p>
+        </div>
+
+        <div class="content-box">
+            {% if step == 'subject' %}
+                <h3>Chọn môn học</h3>
+                <div class="options-grid">
+                    {% for s in subjects %}
+                        <a href="{{ url_for('test', subject=s) }}" class="option-btn">{{ s }}</a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if step == 'exam' %}
+                <h3>Chọn đề kiểm tra môn {{ subject }}</h3>
+                <div class="options-grid">
+                    {% for e in exams %}
+                        <a href="{{ url_for('test', subject=subject, exam=e) }}" class="option-btn">{{ e }}</a>
+                    {% endfor %}
+                </div>
+                <a href="{{ url_for('test') }}" class="back-btn" style="margin-top: 20px;">← Chọn môn khác</a>
+            {% endif %}
+
+            {% if step == 'quiz' %}
+                {% if result %}
+                    <div class="result-box">
+                        <h3>🎯 Kết quả bài kiểm tra</h3>
+                        <div class="result-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">{{ result.correct }}</div>
+                                <div>Câu đúng</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">{{ result.percentage }}%</div>
+                                <div>Điểm số</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">{{ result.total }}</div>
+                                <div>Tổng câu</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if result.wrong_answers %}
+                        <div class="wrong-answers">
+                            <h4>❌ Các câu trả lời sai ({{ result.wrong_answers|length }} câu)</h4>
+                            <p style="color: #856404; margin-bottom: 15px;">Hãy xem giải thích chi tiết để hiểu rõ hơn nhé!</p>
+                            
+                            {% for wrong in result.wrong_answers %}
+                                <div class="wrong-item">
+                                    <p><span class="label">❓ Câu hỏi:</span> {{ wrong.question }}</p>
+                                    
+                                    <div class="answers-display">
+                                        <div>A. {{ wrong.A }}</div>
+                                        <div>B. {{ wrong.B }}</div>
+                                        <div>C. {{ wrong.C }}</div>
+                                        <div>D. {{ wrong.D }}</div>
+                                    </div>
+                                    
+                                    <p><span class="label">👤 Bạn đã chọn:</span> <span class="wrong-answer-highlight">{{ wrong.your_answer }}</span></p>
+                                    <p><span class="label">✅ Đáp án đúng:</span> <span class="correct-answer-highlight">{{ wrong.correct_answer }}</span></p>
+                                    
+                                    <!-- Phần giải thích -->
+                                    {% if wrong.explanation %}
+                                        <div class="explanation-box">
+                                            <div class="explanation-header">
+                                                Giải thích chi tiết
+                                            </div>
+                                            <div class="explanation-text">
+                                                {{ wrong.explanation }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="perfect-score">
+                            <h4>Xuất sắc!</h4>
+                            <p>Bạn đã trả lời đúng tất cả các câu hỏi! 🎉</p>
+                        </div>
+                    {% endif %}
+
+                    <div class="action-buttons">
+                        <a href="{{ url_for('test', subject=subject, exam=exam) }}" class="option-btn">🔄 Làm lại</a>
+                        <a href="{{ url_for('test', subject=subject) }}" class="option-btn">📚 Đề khác</a>
+                        <a href="{{ url_for('test') }}" class="option-btn">🏠 Chọn môn khác</a>
+                    </div>
+                {% else %}
+                    <h3>{{ subject }} - {{ exam }}</h3>
+                    <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                        📝 Có {{ questions|length }} câu hỏi - ⏰ Thời gian: 15 phút
+                    </p>
+
+                    <form method="POST" class="test-form">
+                        {% for q in questions %}
+                            <div class="question-item">
+                                <p><strong>Câu {{ loop.index }}:</strong> {{ q.question }}</p>
+                                <div class="answer-options">
+                                    <div class="answer-option">
+                                        <input type="radio" id="q{{ loop.index0 }}_a" name="q{{ loop.index0 }}" value="A" required>
+                                        <label for="q{{ loop.index0 }}_a">A. {{ q.A }}</label>
+                                    </div>
+                                    <div class="answer-option">
+                                        <input type="radio" id="q{{ loop.index0 }}_b" name="q{{ loop.index0 }}" value="B">
+                                        <label for="q{{ loop.index0 }}_b">B. {{ q.B }}</label>
+                                    </div>
+                                    <div class="answer-option">
+                                        <input type="radio" id="q{{ loop.index0 }}_c" name="q{{ loop.index0 }}" value="C">
+                                        <label for="q{{ loop.index0 }}_c">C. {{ q.C }}</label>
+                                    </div>
+                                    <div class="answer-option">
+                                        <input type="radio" id="q{{ loop.index0 }}_d" name="q{{ loop.index0 }}" value="D">
+                                        <label for="q{{ loop.index0 }}_d">D. {{ q.D }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <button type="submit">✅ Nộp bài</button>
+                    </form>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

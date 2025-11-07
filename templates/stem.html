@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phòng Thí Nghiệm Ảo - Lý Hóa Sinh</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,255,255,0.3);
+        }
+
+        .filter-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .filter-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        .subject-tabs {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .subject-tab {
+            padding: 15px 35px;
+            border: 3px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            font-size: 1.1em;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .subject-tab:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .subject-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #764ba2;
+        }
+
+        .subject-tab .icon {
+            font-size: 1.5em;
+        }
+
+        .subject-section {
+            margin-bottom: 50px;
+        }
+
+        .subject-header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .subject-header .icon {
+            font-size: 3em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subject-header h2 {
+            font-size: 2em;
+            color: #333;
+        }
+
+        .subject-header .count {
+            margin-left: auto;
+            padding: 8px 20px;
+            background: #667eea;
+            color: white;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .experiments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .experiment-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .experiment-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .experiment-image {
+            width: 100%;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4em;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .experiment-image.physics {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .experiment-image.chemistry {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .experiment-image.biology {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .experiment-content {
+            padding: 20px;
+        }
+
+        .experiment-category {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .category-physics {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .category-chemistry {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .category-biology {
+            background: #fce4ec;
+            color: #c2185b;
+        }
+
+        .experiment-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .experiment-desc {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+
+        .experiment-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .difficulty {
+            padding: 6px 14px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .difficulty.easy {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .difficulty.medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .difficulty.hard {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .start-btn {
+            padding: 10px 22px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .no-experiments {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 15px;
+            color: #666;
+            font-size: 1.2em;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .no-experiments .icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .experiments-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .subject-tabs {
+                flex-direction: column;
+            }
+
+            .subject-tab {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .subject-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .subject-header .count {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔬 Phòng Thí Nghiệm Ảo</h1>
+            <p>Khám phá khoa học Lý - Hóa - Sinh một cách trực quan và thú vị</p>
+            <div class="nav-buttons">
+                <a href="/" class="nav-btn">← Trang chủ</a>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-title">Chọn môn học để khám phá</div>
+            <div class="subject-tabs">
+                <a href="?subject=all" class="subject-tab {{ 'active' if selected_subject == 'all' else '' }}">
+                    <span class="icon">📚</span>
+                    <span>Tất cả</span>
+                </a>
+                <a href="?subject=Lý" class="subject-tab {{ 'active' if selected_subject == 'Lý' else '' }}">
+                    <span class="icon">⚡</span>
+                    <span>Vật Lý</span>
+                </a>
+                <a href="?subject=Hóa" class="subject-tab {{ 'active' if selected_subject == 'Hóa' else '' }}">
+                    <span class="icon">🧪</span>
+                    <span>Hóa Học</span>
+                </a>
+                <a href="?subject=Sinh" class="subject-tab {{ 'active' if selected_subject == 'Sinh' else '' }}">
+                    <span class="icon">🌿</span>
+                    <span>Sinh Học</span>
+                </a>
+            </div>
+        </div>
+
+        {% if experiments %}
+            {% for subject_name, subject_experiments in experiments.items() %}
+            <div class="subject-section">
+                <div class="subject-header">
+                    {% if subject_name == 'Lý' %}
+                    <span class="icon">⚡</span>
+                    <h2>Vật Lý</h2>
+                    {% elif subject_name == 'Hóa' %}
+                    <span class="icon">🧪</span>
+                    <h2>Hóa Học</h2>
+                    {% elif subject_name == 'Sinh' %}
+                    <span class="icon">🌿</span>
+                    <h2>Sinh Học</h2>
+                    {% endif %}
+                    <span class="count">{{ subject_experiments|length }} thí nghiệm</span>
+                </div>
+
+                <div class="experiments-grid">
+                    {% for exp in subject_experiments %}
+                    <div class="experiment-card" onclick="startExperiment('{{ exp.id }}')">
+                        <div class="experiment-image {{ 'physics' if subject_name == 'Lý' else ('chemistry' if subject_name == 'Hóa' else 'biology') }}">
+                            {% if subject_name == 'Lý' %}⚡{% elif subject_name == 'Hóa' %}🧪{% else %}🌿{% endif %}
+                        </div>
+                        <div class="experiment-content">
+                            <span class="experiment-category {{ 'category-physics' if subject_name == 'Lý' else ('category-chemistry' if subject_name == 'Hóa' else 'category-biology') }}">
+                                {{ exp.category }}
+                            </span>
+                            <div class="experiment-title">{{ exp.title }}</div>
+                            <div class="experiment-desc">{{ exp.desc }}</div>
+                            <div class="experiment-footer">
+                                <span class="difficulty {{ 'easy' if exp.difficulty == 'Dễ' else ('medium' if exp.difficulty == 'Trung bình' else 'hard') }}">
+                                    {{ exp.difficulty }}
+                                </span>
+                                <button class="start-btn" onclick="event.stopPropagation(); startExperiment('{{ exp.id }}')">
+                                    Bắt đầu →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+        <div class="no-experiments">
+            <div class="icon">🔍</div>
+            <p>Không tìm thấy thí nghiệm nào</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function startExperiment(expId) {
+            window.location.href = '/stem/experiment/' + expId;
+        }
+    </script>
+</body>
+</html>

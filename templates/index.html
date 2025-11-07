@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang chủ - Học tập AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%), 
+                        url('/static/images/anh1.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2em;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 20px 0;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 30px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #667eea;
+        }
+
+        .card-desc {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Hệ thống hỗ trợ tự học môn KHTN có tích hợp AI</h1>
+            <p>Học thông minh - Tiến bộ vượt trội</p>
+        </div>
+
+        <div class="grid">
+            <a href="/chatbot" class="card">
+                <span class="card-icon"></span>
+                <div class="card-title">Chatbot AI</div>
+                <div class="card-desc">Trợ lý AI hướng dẫn giải bài tập chi tiết từng bước</div>
+            </a>
+
+            <a href="/quiz" class="card">
+                <span class="card-icon"></span>
+                <div class="card-title">Game học tập</div>
+                <div class="card-desc">Trắc nghiệm vui nhộn với bảng xếp hạng và thời gian</div>
+            </a>
+
+            <a href="/materials" class="card">
+                <span class="card-icon"></span>
+                <div class="card-title">Kho tài liệu</div>
+                <div class="card-desc">Tài liệu học tập đầy đủ các môn Toán, Lý, Hóa, Sinh</div>
+            </a>
+
+            <a href="/test" class="card">
+                <span class="card-icon"></span>
+                <div class="card-title">Trắc nghiệm thông minh</div>
+                <div class="card-desc">Làm bài kiểm tra và xem kết quả chi tiết ngay lập tức</div>
+            </a>
+
+            <a href="/advisor" class="card">
+                <span class="card-icon"></span>
+                <div class="card-title">Tư vấn học tập</div>
+                <div class="card-desc">AI tư vấn lộ trình học tập cá nhân hóa phù hợp với bạn</div>
+            </a>
+
+            <a href="/stem" class="card">
+                <span class="card-icon"></span>
+                <div class="card-title">Thí nghiệm ảo</div>
+                <div class="card-desc">Những thí nghiệm vật lí bổ ích cho các bạn</div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

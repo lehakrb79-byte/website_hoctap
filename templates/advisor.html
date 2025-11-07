@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tư vấn học tập AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-5px);
+        }
+
+        .advisor-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .examples {
+            background: #f5f7fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .examples p {
+            color: #666;
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+            resize: vertical;
+            transition: border 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .result-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result-box h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        .result-box p {
+            color: #333;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #667eea;
+            display: none;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .advisor-container {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-btn">← Quay lại</a>
+
+        <div class="header">
+            <h1>Tư vấn học tập AI</h1>
+            <p>Nhận lộ trình học tập cá nhân hóa từ AI</p>
+        </div>
+
+        <div class="advisor-container">
+            <form method="POST" id="advisorForm">
+                <div class="form-section">
+                    <h3>Mô tả tình hình học tập của bạn</h3>
+                    
+                    <div class="examples">
+                        <p><strong>Ví dụ bạn có thể nhập:</strong></p>
+                        <p>• Tên, lớp, môn học yếu/giỏi</p>
+                        <p>• Thời gian học mỗi ngày</p>
+                        <p>• Mục tiêu học tập (thi đại học, cải thiện điểm...)</p>
+                        <p>• Khó khăn đang gặp phải</p>
+                    </div>
+
+                    <textarea name="info" placeholder="VD: Em là học sinh lớp 9. Em học khá tốt các môn Toán và Tiếng Anh, nhưng lại gặp khó khăn ở môn Vật lý và Hóa học. Mỗi ngày em có khoảng 2 tiếng để tự học sau giờ lên lớp. Mục tiêu của em là thi đậu vào trường THPT chuyên của tỉnh. Em thường bị nhầm lẫn giữa các công thức tính trong Vật lý và khó nhớ các phản ứng hóa học cơ bản. Em muốn có một kế hoạch học tập giúp em cải thiện hai môn này trước kỳ thi vào 10." required></textarea>
+                </div>
+
+                <button type="submit">Nhận lộ trình học tập</button>
+            </form>
+
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <p>AI đang phân tích và tạo lộ trình cho bạn...</p>
+            </div>
+
+            {% if plan %}
+            <div class="result-box">
+                <h3>Lộ trình học tập đề xuất</h3>
+                <p>{{ plan }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('advisorForm').addEventListener('submit', function() {
+            document.getElementById('loading').classList.add('active');
+        });
+    </script>
+</body>
+</html>

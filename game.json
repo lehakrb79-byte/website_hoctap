@@ -1,0 +1,510 @@
+{
+    "physics": {
+        "Đề 1": [
+            {
+                "question": "Lực đẩy do chất lỏng tác dụng lên vật đặt trong nó gọi là gì?",
+                "A": "Lực hấp dẫn",
+                "B": "Lực ma sát",
+                "C": "Lực đẩy Archimedes",
+                "D": "Lực đàn hồi",
+                "answer": "C"
+            },
+            {
+                "question": "Lực đẩy Archimedes có phương và chiều như thế nào?",
+                "A": "Phương ngang, chiều từ trái sang phải",
+                "B": "Phương thẳng đứng, chiều từ dưới lên trên",
+                "C": "Phương thẳng đứng, chiều từ trên xuống dưới",
+                "D": "Phương nghiêng, chiều từ phải sang trái",
+                "answer": "B"
+            },
+            {
+                "question": "Lực đẩy Archimedes tác dụng lên vật trong chất lỏng là do:",
+                "A": "Trọng lượng của vật",
+                "B": "Áp suất của chất lỏng tăng theo độ sâu",
+                "C": "Trọng lượng của chất lỏng",
+                "D": "Chuyển động của chất lỏng",
+                "answer": "B"
+            },
+            {
+                "question": "Độ lớn của lực đẩy Archimedes được tính bằng công thức nào?",
+                "A": "FA = d.V",
+                "B": "FA = m.g",
+                "C": "FA = P/V",
+                "D": "FA = d.g.V",
+                "answer": "A"
+            },
+            {
+                "question": "Trong công thức FA = d.V, đại lượng d là gì?",
+                "A": "Trọng lượng riêng của vật",
+                "B": "Trọng lượng riêng của chất lỏng",
+                "C": "Khối lượng riêng của chất lỏng",
+                "D": "Trọng lượng của phần chất lỏng bị chiếm chỗ",
+                "answer": "B"
+            },
+            {
+                "question": "Khi vật nổi trên mặt nước, lực đẩy Archimedes so với trọng lượng của vật là:",
+                "A": "Lớn hơn trọng lượng",
+                "B": "Nhỏ hơn trọng lượng",
+                "C": "Bằng trọng lượng",
+                "D": "Gấp đôi trọng lượng",
+                "answer": "C"
+            },
+            {
+                "question": "Một vật có thể tích phần chìm trong nước là 0,002 m³. Trọng lượng riêng của nước là 10 000 N/m³. Tính lực đẩy Archimedes tác dụng lên vật.",
+                "A": "10 N",
+                "B": "20 N",
+                "C": "15 N",
+                "D": "25 N",
+                "answer": "B"
+            },
+            {
+                "question": "Một khối gỗ nổi một phần trong nước. Khi ấn vật chìm hoàn toàn thì lực đẩy Archimedes:",
+                "A": "Giảm",
+                "B": "Không đổi",
+                "C": "Tăng",
+                "D": "Bằng không",
+                "answer": "C"
+            },
+            {
+                "question": "Hai vật cùng thể tích được thả vào hai chất lỏng khác nhau, vật nào chịu lực đẩy lớn hơn?",
+                "A": "Vật trong chất lỏng có trọng lượng riêng nhỏ hơn",
+                "B": "Vật trong chất lỏng có trọng lượng riêng lớn hơn",
+                "C": "Hai vật chịu lực đẩy như nhau",
+                "D": "Không xác định được",
+                "answer": "B"
+            },
+            {
+                "question": "Một vật có khối lượng 1,5 kg, thể tích 0,0015 m³. Vật có nổi trên nước không? Biết trọng lượng riêng của nước là 10 000 N/m³.",
+                "A": "Vật chìm hoàn toàn",
+                "B": "Vật nổi hoàn toàn",
+                "C": "Vật lơ lửng trong nước",
+                "D": "Không xác định được",
+                "answer": "C"
+            }
+        ],
+        "Đề 2": [
+            {
+                "question": "Công thức tính khối lượng riêng của một chất là:",
+                "A": "D = V/m",
+                "B": "D = m/V",
+                "C": "D = m × V",
+                "D": "D = P/V",
+                "answer": "B"
+            },
+            {
+                "question": "Đơn vị của khối lượng riêng trong hệ SI là:",
+                "A": "g/cm³",
+                "B": "N/m³",
+                "C": "kg/m³",
+                "D": "kg/cm³",
+                "answer": "C"
+            },
+            {
+                "question": "Chất lỏng gây ra áp suất lên vật theo:",
+                "A": "Một phương duy nhất",
+                "B": "Phương thẳng đứng",
+                "C": "Mọi phương",
+                "D": "Phương ngang",
+                "answer": "C"
+            },
+            {
+                "question": "Khi ta thả một hòn bi xuống đáy cốc nước, hòn bi chịu áp suất chất lỏng lớn hơn vì:",
+                "A": "Nước nhẹ hơn không khí",
+                "B": "Áp suất tăng theo độ sâu",
+                "C": "Áp suất giảm theo độ sâu",
+                "D": "Nước đẩy vật lên",
+                "answer": "B"
+            },
+            {
+                "question": "Khi biết khối lượng riêng của vật liệu làm vật, ta có thể xác định:",
+                "A": "Khối lượng vật",
+                "B": "Thể tích vật",
+                "C": "Chất cấu tạo nên vật",
+                "D": "Trọng lượng vật",
+                "answer": "C"
+            },
+            {
+                "question": "Áp suất khí quyển tồn tại vì:",
+                "A": "Không khí không có trọng lượng",
+                "B": "Không khí bao quanh Trái Đất và có trọng lượng",
+                "C": "Do gió và mưa tạo nên",
+                "D": "Do Trái Đất quay quanh Mặt Trời",
+                "answer": "B"
+            },
+            {
+                "question": "Một vật có khối lượng 300 g và thể tích 100 cm³. Khối lượng riêng của vật là:",
+                "A": "30 kg/m³",
+                "B": "0,3 g/cm³",
+                "C": "3 g/cm³",
+                "D": "3000 kg/m³",
+                "answer": "C"
+            },
+            {
+                "question": "Khi ta lặn xuống hồ sâu, cảm giác nặng tai hơn là do:",
+                "A": "Không khí loãng hơn",
+                "B": "Áp suất nước tăng theo độ sâu",
+                "C": "Tai phản ứng chậm",
+                "D": "Cơ thể mệt mỏi",
+                "answer": "B"
+            },
+            {
+                "question": "Khi ấn chặt giác hút cao su lên mặt kính, giác hút bám chặt là do:",
+                "A": "Tính đàn hồi của cao su",
+                "B": "Áp suất khí quyển bên ngoài lớn hơn bên trong giác hút",
+                "C": "Trọng lực của Trái Đất",
+                "D": "Nước trong giác hút bị nén",
+                "answer": "B"
+            },
+            {
+                "question": "Một khối sắt có thể tích 0,02 m³ và khối lượng riêng 7800 kg/m³. Tính khối lượng của khối sắt.",
+                "A": "15,6 kg",
+                "B": "156 kg",
+                "C": "1560 kg",
+                "D": "0,156 kg",
+                "answer": "B"
+            }
+        ]
+    },
+    "chemistry": {
+        "Đề 1": [
+            {
+                "question": "Trong một phản ứng hóa học, điều gì được bảo toàn?",
+                "A": "Số phân tử",
+                "B": "Số nguyên tử mỗi nguyên tố",
+                "C": "Khối lượng riêng",
+                "D": "Nhiệt độ",
+                "answer": "B"
+            },
+            {
+                "question": "Nội dung định luật bảo toàn khối lượng là:",
+                "A": "Khối lượng sản phẩm nhỏ hơn khối lượng phản ứng",
+                "B": "Khối lượng sản phẩm lớn hơn khối lượng phản ứng",
+                "C": "Tổng khối lượng chất tham gia bằng tổng khối lượng sản phẩm",
+                "D": "Cả A và B đều sai",
+                "answer": "C"
+            },
+            {
+                "question": "Phản ứng giữa BaCl₂ và Na₂SO₄ tạo ra kết tủa màu:",
+                "A": "Xanh",
+                "B": "Trắng",
+                "C": "Vàng",
+                "D": "Đỏ",
+                "answer": "B"
+            },
+            {
+                "question": "Trong phản ứng: 4Al + 3O₂ → 2Al₂O₃, tỉ lệ số mol của Al : O₂ : Al₂O₃ là:",
+                "A": "2 : 3 : 4",
+                "B": "4 : 3 : 2",
+                "C": "3 : 4 : 2",
+                "D": "4 : 2 : 3",
+                "answer": "B"
+            },
+            {
+                "question": "Từ phương trình trên, khối lượng 9 g Al phản ứng với bao nhiêu gam O₂?",
+                "A": "8 g",
+                "B": "9 g",
+                "C": "6 g",
+                "D": "4 g",
+                "answer": "A"
+            },
+            {
+                "question": "Khi hòa tan đường vào nước, ta được:",
+                "A": "Hỗn hợp không đồng nhất",
+                "B": "Dung dịch đồng nhất",
+                "C": "Chất tinh khiết",
+                "D": "Chất khí",
+                "answer": "B"
+            },
+            {
+                "question": "Trong dung dịch đường, chất tan là:",
+                "A": "Nước",
+                "B": "Đường",
+                "C": "Không khí",
+                "D": "Dầu",
+                "answer": "B"
+            },
+            {
+                "question": "Độ tan cho biết:",
+                "A": "Số mol chất tan trong 1 lít dung dịch",
+                "B": "Số gam chất tan trong 100 gam nước",
+                "C": "Số phân tử chất tan trong dung môi",
+                "D": "Cả ba đều đúng",
+                "answer": "B"
+            },
+            {
+                "question": "Dung dịch NaCl 20% nghĩa là:",
+                "A": "20 g NaCl tan trong 80 g nước",
+                "B": "20 g NaCl trong 100 g dung dịch",
+                "C": "20 g NaCl trong 100 g nước",
+                "D": "20 g NaCl trong 200 g dung dịch",
+                "answer": "B"
+            },
+            {
+                "question": "Để pha 200 g dung dịch NaCl 20%, cần:",
+                "A": "40 g NaCl và 160 g nước",
+                "B": "20 g NaCl và 180 g nước",
+                "C": "50 g NaCl và 150 g nước",
+                "D": "10 g NaCl và 190 g nước",
+                "answer": "A"
+            }
+        ],
+        "Đề 2": [
+            {
+                "question": "Khi đun nước sôi, hiện tượng nào sau đây xảy ra?",
+                "A": "Biến đổi hóa học",
+                "B": "Biến đổi vật lý",
+                "C": "Vừa vật lý vừa hóa học",
+                "D": "Không có biến đổi",
+                "answer": "B"
+            },
+            {
+                "question": "Cho sắt phản ứng với lưu huỳnh tạo ra sắt(II) sunfua (FeS). Đây là:",
+                "A": "Biến đổi vật lý",
+                "B": "Biến đổi hóa học",
+                "C": "Pha trộn vật chất",
+                "D": "Sự hoà tan",
+                "answer": "B"
+            },
+            {
+                "question": "Dấu hiệu nào cho thấy có phản ứng hóa học xảy ra?",
+                "A": "Chất tan ra",
+                "B": "Xuất hiện chất mới",
+                "C": "Nhiệt độ tăng hoặc giảm",
+                "D": "Cả B và C đúng",
+                "answer": "D"
+            },
+            {
+                "question": "Khi đốt cháy nến, phần nào là biến đổi hóa học?",
+                "A": "Nến chảy",
+                "B": "Nến bay hơi",
+                "C": "Khói và khí CO₂ sinh ra",
+                "D": "Nến bị mềm ra",
+                "answer": "C"
+            },
+            {
+                "question": "Phản ứng nào sau đây là phản ứng hóa học?",
+                "A": "Nước bay hơi",
+                "B": "Muối tan trong nước",
+                "C": "Sắt bị gỉ",
+                "D": "Đá vỡ vụn",
+                "answer": "C"
+            },
+            {
+                "question": "Khi đốt cháy khí hidro trong oxi tạo nước, phản ứng này có đặc điểm gì?",
+                "A": "Tỏa nhiệt",
+                "B": "Thu nhiệt",
+                "C": "Không đổi nhiệt",
+                "D": "Cả hai sai",
+                "answer": "A"
+            },
+            {
+                "question": "Khi trộn giấm và bột baking soda, hiện tượng sủi bọt do khí CO₂ bay lên. Đây là:",
+                "A": "Phản ứng hóa học",
+                "B": "Biến đổi vật lý",
+                "C": "Bay hơi",
+                "D": "Kết tinh",
+                "answer": "A"
+            },
+            {
+                "question": "Nhiệt sinh ra trong phản ứng hóa học có thể được ứng dụng trong:",
+                "A": "Lò sưởi",
+                "B": "Đèn pin",
+                "C": "Máy phát điện",
+                "D": "Quạt máy",
+                "answer": "A"
+            },
+            {
+                "question": "Khi thổi khí CO₂ vào nước vôi trong, hiện tượng nào xảy ra?",
+                "A": "Không có gì",
+                "B": "Nước vôi trong đục",
+                "C": "Có khí thoát ra",
+                "D": "Màu nước thay đổi sang đỏ",
+                "answer": "B"
+            },
+            {
+                "question": "Trong phòng thí nghiệm ảo, khi cho đồng (Cu) tác dụng với dung dịch bạc nitrat (AgNO₃), hiện tượng nào xuất hiện?",
+                "A": "Đồng tan hết",
+                "B": "Bạc kim loại bám lên thanh đồng",
+                "C": "Dung dịch chuyển sang màu trong suốt",
+                "D": "Không có gì xảy ra",
+                "answer": "B"
+            }
+        ]
+    },
+    "biology": {
+        "Đề 1": [
+            {
+                "question": "Chất dinh dưỡng là gì?",
+                "A": "Là các chất có trong không khí mà cơ thể hấp thụ.",
+                "B": "Là các chất có trong thức ăn mà cơ thể sử dụng để cấu tạo cơ thể và cung cấp năng lượng.",
+                "C": "Là những chất có trong nước uống.",
+                "D": "Là các vitamin và khoáng chất riêng lẻ.",
+                "answer": "B"
+            },
+            {
+                "question": "Enzyme amylase trong tuyến nước bọt có vai trò gì?",
+                "A": "Phân giải protein thành axit amin.",
+                "B": "Phân giải chất béo thành axit béo.",
+                "C": "Biến đổi tinh bột chín thành đường maltose.",
+                "D": "Hòa tan vitamin trong thức ăn.",
+                "answer": "C"
+            },
+            {
+                "question": "Quá trình tiêu hóa chủ yếu diễn ra ở đâu?",
+                "A": "Khoang miệng",
+                "B": "Dạ dày",
+                "C": "Ruột non",
+                "D": "Ruột già",
+                "answer": "C"
+            },
+            {
+                "question": "Nguyên nhân chủ yếu gây bệnh sâu răng là gì?",
+                "A": "Ăn nhiều rau xanh.",
+                "B": "Vi khuẩn phân hủy thức ăn, tạo axit làm hỏng men răng.",
+                "C": "Do thiếu vitamin C.",
+                "D": "Do uống nước lạnh.",
+                "answer": "B"
+            },
+            {
+                "question": "Để phòng bệnh viêm loét dạ dày – tá tràng, ta cần:",
+                "A": "Ăn nhiều đồ cay, chua để kích thích tiêu hóa.",
+                "B": "Uống cà phê và rượu thường xuyên.",
+                "C": "Ăn uống điều độ, giữ tinh thần thoải mái.",
+                "D": "Nhịn ăn sáng.",
+                "answer": "C"
+            },
+            {
+                "question": "Máu gồm hai phần chính là:",
+                "A": "Huyết tương và tế bào máu.",
+                "B": "Huyết tương và nước tiểu.",
+                "C": "Hồng cầu và huyết tương.",
+                "D": "Bạch cầu và tiểu cầu.",
+                "answer": "A"
+            },
+            {
+                "question": "Hồng cầu có vai trò gì trong cơ thể?",
+                "A": "Tạo ra kháng thể chống bệnh.",
+                "B": "Làm đông máu.",
+                "C": "Vận chuyển oxy và cacbon đioxit.",
+                "D": "Tiêu diệt vi khuẩn.",
+                "answer": "C"
+            },
+            {
+                "question": "Khi truyền máu, cần tuân theo nguyên tắc nào sau đây?",
+                "A": "Có thể truyền bất cứ nhóm máu nào.",
+                "B": "Không để kháng thể trong máu người nhận gây kết dính kháng nguyên của người cho.",
+                "C": "Chỉ cần cùng nhóm máu là được.",
+                "D": "Không quan trọng nhóm máu.",
+                "answer": "B"
+            },
+            {
+                "question": "Huyết áp cao có thể do nguyên nhân nào sau đây?",
+                "A": "Ăn ít rau xanh.",
+                "B": "Ăn nhiều muối, chất béo và ít vận động.",
+                "C": "Uống nhiều nước lọc.",
+                "D": "Tập thể dục đều đặn.",
+                "answer": "B"
+            },
+            {
+                "question": "Trong hệ tuần hoàn, mao mạch có chức năng gì?",
+                "A": "Đưa máu từ tim đến cơ quan.",
+                "B": "Thực hiện trao đổi chất và khí giữa máu với tế bào.",
+                "C": "Vận chuyển máu trở về tim.",
+                "D": "Dự trữ máu trong cơ thể.",
+                "answer": "B"
+            }
+        ],
+        "Đề 2": [
+            {
+                "question": "Cơ thể người gồm các phần chính là:",
+                "A": "Đầu, cổ, thân, hai tay, hai chân",
+                "B": "Đầu, cổ, thân, hai tay",
+                "C": "Thân, hai tay, hai chân",
+                "D": "Đầu, thân, hai chân",
+                "answer": "A"
+            },
+            {
+                "question": "Lớp bao bọc bên ngoài cơ thể người là:",
+                "A": "Cơ",
+                "B": "Mỡ",
+                "C": "Da",
+                "D": "Xương",
+                "answer": "C"
+            },
+            {
+                "question": "Hệ cơ quan có chức năng vận chuyển chất dinh dưỡng và oxi trong cơ thể là:",
+                "A": "Hệ tiêu hóa",
+                "B": "Hệ hô hấp",
+                "C": "Hệ tuần hoàn",
+                "D": "Hệ bài tiết",
+                "answer": "C"
+            },
+            {
+                "question": "Cơ quan nào thuộc hệ hô hấp?",
+                "A": "Dạ dày",
+                "B": "Tim",
+                "C": "Phổi",
+                "D": "Thận",
+                "answer": "C"
+            },
+            {
+                "question": "Bộ xương người trưởng thành có khoảng:",
+                "A": "106 xương",
+                "B": "206 xương",
+                "C": "306 xương",
+                "D": "406 xương",
+                "answer": "B"
+            },
+            {
+                "question": "Thành phần nào giúp xương có tính mềm dẻo?",
+                "A": "Chất khoáng",
+                "B": "Nước",
+                "C": "Chất hữu cơ",
+                "D": "Mỡ",
+                "answer": "C"
+            },
+            {
+                "question": "Loại khớp cho phép cử động linh hoạt nhất là:",
+                "A": "Khớp bất động",
+                "B": "Khớp bán động",
+                "C": "Khớp động",
+                "D": "Khớp xương sọ",
+                "answer": "C"
+            },
+            {
+                "question": "Cơ bám vào xương nhờ:",
+                "A": "Da",
+                "B": "Mạch máu",
+                "C": "Dây chằng, gân",
+                "D": "Tủy xương",
+                "answer": "C"
+            }
+        ]
+    },
+    "players": [
+        {
+            "name": "ktttt",
+            "subject": "physics",
+            "score": 1,
+            "total": 10,
+            "duration": 9,
+            "timestamp": "2025-10-10 15:51:56"
+        },
+        {
+            "name": "ktttt",
+            "subject": "chemistry",
+            "score": 2,
+            "total": 10,
+            "duration": 7,
+            "timestamp": "2025-10-10 15:52:16"
+        },
+        {
+            "name": "lê",
+            "subject": "physics",
+            "score": 3,
+            "total": 10,
+            "duration": 23,
+            "timestamp": "2025-10-10 19:13:10"
+        }
+    ]
+}

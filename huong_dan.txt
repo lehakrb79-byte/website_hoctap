@@ -1,0 +1,4 @@
+ 1 pip install -r requirements.txt
+ 2 python app.py
+ ##
+ngrok config add-authtoken 31HXznnenljdjhmQWpeOGGIKVlF_21vUWKkp44Q9ZvmiVbjsA

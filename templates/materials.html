@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kho Tài Liệu Học Tập</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .subjects-container {
+            display: grid;
+            gap: 30px;
+        }
+
+        .subject-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            animation: fadeInUp 0.8s ease;
+            transition: all 0.4s ease;
+        }
+
+        .subject-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+        }
+
+        .subject-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid;
+            border-image: linear-gradient(90deg, #667eea, #764ba2) 1;
+        }
+
+        .subject-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .subject-title {
+            flex: 1;
+        }
+
+        .subject-title h2 {
+            font-size: 2em;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .subject-title .count {
+            color: #718096;
+            font-size: 0.95em;
+        }
+
+        .materials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .material-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 16px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .material-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .material-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .material-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .material-type {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .type-pdf {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .type-video {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .material-title {
+            font-size: 1.3em;
+            color: #2d3748;
+            margin-bottom: 12px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .material-desc {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+
+        .material-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            cursor: pointer;
+            border: none;
+            font-size: 1em;
+        }
+
+        .material-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 95%;
+            height: 90%;
+            max-width: 1400px;
+            position: relative;
+            animation: slideUp 0.4s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            padding: 20px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-title {
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1.8em;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            flex: 1;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .modal-body iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            font-size: 1.2em;
+            color: #667eea;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-right: 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .materials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .subject-section {
+                padding: 25px;
+            }
+
+            .subject-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .subject-title h2 {
+                font-size: 1.6em;
+            }
+
+            .modal-content {
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+            }
+
+            .modal-header {
+                padding: 15px 20px;
+            }
+
+            .modal-title {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-btn">
+            <span>←</span>
+            <span>Quay lại</span>
+        </a>
+
+        <div class="header">
+            <h1>Kho Tài Liệu Học Tập</h1>
+            <p>Tổng hợp tài liệu đầy đủ các môn học</p>
+        </div>
+
+        <div class="subjects-container">
+            <div class="subject-section">
+                <div class="subject-header">
+                    <div class="subject-icon">📐</div>
+                    <div class="subject-title">
+                        <h2>Toán</h2>
+                        <div class="count">3 tài liệu</div>
+                    </div>
+                </div>
+                <div class="materials-grid">
+                    <div class="material-card">
+                        <span class="material-type type-pdf">PDF</span>
+                        <h3 class="material-title">Đại số - Phương trình bậc 2</h3>
+                        <p class="material-desc">Lý thuyết và bài tập về phương trình bậc 2</p>
+                        <button class="material-link" onclick="openMaterial('pdf', 'https://docs.google.com/document/d/1iSEKAU4zZhHKCjesqs27B30LXk7Mm4KeoG1nWabkkzs/preview', 'Đại số - Phương trình bậc 2')">
+                            <span>Xem tài liệu</span>
+                            <span>→</span>
+                        </button>
+                    </div>
+                    <div class="material-card">
+                        <span class="material-type type-video">Video</span>
+                        <h3 class="material-title">Hình học - Định lý Pythagore</h3>
+                        <p class="material-desc">Video hướng dẫn định lý Pythagore</p>
+                        <button class="material-link" onclick="openMaterial('video', 'https://www.youtube.com/embed/dQw4w9WgXcQ', 'Hình học - Định lý Pythagore')">
+                            <span>Xem video</span>
+                            <span>▶</span>
+                        </button>
+                    </div>
+                    <div class="material-card">
+                        <span class="material-type type-pdf">PDF</span>
+                        <h3 class="material-title">Bài tập tổng hợp</h3>
+                        <p class="material-desc">100 bài tập Toán lớp 8</p>
+                        <button class="material-link" onclick="openMaterial('pdf', 'https://drive.google.com/file/d/1XYZ789/preview', 'Bài tập tổng hợp')">
+                            <span>Xem tài liệu</span>
+                            <span>→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lý -->
+            <div class="subject-section">
+                <div class="subject-header">
+                    <div class="subject-icon">⚡</div>
+                    <div class="subject-title">
+                        <h2>Lý</h2>
+                        <div class="count">3 tài liệu</div>
+                    </div>
+                </div>
+                <div class="materials-grid">
+                    <div class="material-card">
+                        <span class="material-type type-pdf">PDF</span>
+                        <h3 class="material-title">Cơ học - Chuyển động</h3>
+                        <p class="material-desc">Lý thuyết chuyển động đều và biến đổi đều</p>
+                        <button class="material-link" onclick="openMaterial('pdf', 'https://drive.google.com/file/d/1DEF456/preview', 'Cơ học - Chuyển động')">
+                            <span>Xem tài liệu</span>
+                            <span>→</span>
+                        </button>
+                    </div>
+                    <div class="material-card">
+                        <span class="material-type type-video">Video</span>
+                        <h3 class="material-title">Điện học cơ bản</h3>
+                        <p class="material-desc">Video giải thích định luật Ohm</p>
+                        <button class="material-link" onclick="openMaterial('video', 'https://www.youtube.com/embed/VIDEO_ID', 'Điện học cơ bản')">
+                            <span>Xem video</span>
+                            <span>▶</span>
+                        </button>
+                    </div>
+                    <div class="material-card">
+                        <span class="material-type type-pdf">PDF</span>
+                        <h3 class="material-title">Quang học - Gương phẳng</h3>
+                        <p class="material-desc">Bài giảng về gương phẳng và phản xạ ánh sáng</p>
+                        <button class="material-link" onclick="openMaterial('pdf', 'https://drive.google.com/file/d/1GHI012/preview', 'Quang học - Gương phẳng')">
+                            <span>Xem tài liệu</span>
+                            <span>→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hóa -->
+            <div class="subject-section">
+                <div class="subject-header">
+                    <div class="subject-icon">🧪</div>
+                    <div class="subject-title">
+                        <h2>Hóa</h2>
+                        <div class="count">3 tài liệu</div>
+                    </div>
+                </div>
+                <div class="materials-grid">
+                    <div class="material-card">
+                        <span class="material-type type-pdf">PDF</span>
+                        <h3 class="material-title">Bảng tuần hoàn</h3>
+                        <p class="material-desc">Bảng tuần hoàn các nguyên tố hóa học</p>
+                        <button class="material-link" onclick="openMaterial('pdf', 'https://drive.google.com/file/d/1JKL345/preview', 'Bảng tuần hoàn')">
+                            <span>Xem tài liệu</span>
+                            <span>→</span>
+                        </button>
+                    </div>
+                    <div class="material-card">
+                        <span class="material-type type-video">Video</span>
+                        <h3 class="material-title">Phản ứng hóa học</h3>
+                        <p class="material-desc">Các loại phản ứng hóa học cơ bản</p>
+                        <button class="material-link" onclick="openMaterial('video', 'https://www.youtube.com/embed/VIDEO_ID2', 'Phản ứng hóa học')">
+                            <span>Xem video</span>
+                            <span>▶</span>
+                        </button>
+                    </div>
+                    <div class="material-card">
+                        <span class="material-type type-pdf">PDF</span>
+                        <h3 class="material-title">Axit - Bazơ - Muối</h3>
+                        <p class="material-desc">Lý thuyết và bài tập về axit, bazơ, muối</p>
+                        <button class="material-link" onclick="openMaterial('pdf', 'https://drive.google.com/file/d/1MNO678/preview', 'Axit - Bazơ - Muối')">
+                            <span>Xem tài liệu</span>
+                            <span>→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="subject-section">
+                <div class="subject-header">
+                    <div class="subject-icon">🧬</div>
+                    <div class="subject-title">
+                        <h2>Sinh</h2>
+                        <div class="count">3 tài liệu</div>
+                    </div>
+                </div>
+                <div class="materials-grid">
+                    <div class="material-card">
+                        <span class="material-type type-pdf">PDF</span>
+                        <h3 class="material-title">Tế bào học</h3>
+                        <p class="material-desc">Cấu tạo và chức năng của tế bào</p>
+                        <button class="material-link" onclick="openMaterial('pdf', 'https://drive.google.com/file/d/1PQR901/preview', 'Tế bào học')">
+                            <span>Xem tài liệu</span>
+                            <span>→</span>
+                        </button>
+                    </div>
+                    <div class="material-card">
+                        <span class="material-type type-video">Video</span>
+                        <h3 class="material-title">Quang hợp ở thực vật</h3>
+                        <p class="material-desc">Video minh họa quá trình quang hợp</p>
+                        <button class="material-link" onclick="openMaterial('video', 'https://www.youtube.com/embed/VIDEO_ID3', 'Quang hợp ở thực vật')">
+                            <span>Xem video</span>
+                            <span>▶</span>
+                        </button>
+                    </div>
+                    <div class="material-card">
+                        <span class="material-type type-pdf">PDF</span>
+                        <h3 class="material-title">Hệ cơ quan người</h3>
+                        <p class="material-desc">Các hệ cơ quan trong cơ thể người</p>
+                        <button class="material-link" onclick="openMaterial('pdf', 'https://drive.google.com/file/d/1STU234/preview', 'Hệ cơ quan người')">
+                            <span>Xem tài liệu</span>
+                            <span>→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="materialModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle"></div>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <span>Đang tải...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openMaterial(type, url, title) {
+            const modal = document.getElementById('materialModal');
+            const modalBody = document.getElementById('modalBody');
+            const modalTitle = document.getElementById('modalTitle');
+            
+            modalTitle.textContent = title;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            modalBody.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <span>Đang tải...</span>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                modalBody.innerHTML = `<iframe src="${url}" allowfullscreen></iframe>`;
+            }, 500);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('materialModal');
+            const modalBody = document.getElementById('modalBody');
+            
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            
+            setTimeout(() => {
+                modalBody.innerHTML = `
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <span>Đang tải...</span>
+                    </div>
+                `;
+            }, 300);
+        }
+
+        document.getElementById('materialModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.subject-section').forEach((section, index) => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = `all 0.6s ease ${index * 0.1}s`;
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

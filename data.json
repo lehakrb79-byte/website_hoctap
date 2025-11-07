@@ -1,0 +1,468 @@
+{
+  "Vật Lý": {
+    "Đề 1 - Lực đẩy Archimedes": [
+      {
+        "question": "Lực đẩy do chất lỏng tác dụng lên vật đặt trong nó gọi là gì?",
+        "A": "Lực hấp dẫn",
+        "B": "Lực ma sát",
+        "C": "Lực đẩy Archimedes",
+        "D": "Lực đàn hồi",
+        "answer": "C",
+        "explanation": "Lực đẩy Archimedes là lực mà chất lỏng tác dụng lên vật nhúng trong nó, có phương thẳng đứng và chiều từ dưới lên. Đây là định luật được nhà bác học Archimedes phát hiện ra khi nghiên cứu về sự nổi và chìm của vật."
+      },
+      {
+        "question": "Lực đẩy Archimedes có phương và chiều như thế nào?",
+        "A": "Phương ngang, chiều từ trái sang phải",
+        "B": "Phương thẳng đứng, chiều từ dưới lên trên",
+        "C": "Phương thẳng đứng, chiều từ trên xuống dưới",
+        "D": "Phương nghiêng, chiều từ phải sang trái",
+        "answer": "B",
+        "explanation": "Lực đẩy Archimedes luôn có phương thẳng đứng và chiều từ dưới lên trên, ngược với chiều của trọng lực. Điều này giúp vật có thể nổi hoặc chìm trong chất lỏng tùy thuộc vào mối quan hệ giữa lực đẩy và trọng lượng vật."
+      },
+      {
+        "question": "Lực đẩy Archimedes tác dụng lên vật trong chất lỏng là do:",
+        "A": "Trọng lượng của vật",
+        "B": "Áp suất của chất lỏng tăng theo độ sâu",
+        "C": "Trọng lượng của chất lỏng",
+        "D": "Chuyển động của chất lỏng",
+        "answer": "B",
+        "explanation": "Áp suất chất lỏng tăng theo độ sâu nên mặt dưới của vật chịu áp lực lớn hơn mặt trên, tạo ra một lực tổng hợp hướng lên. Đây chính là nguyên nhân vật lý của lực đẩy Archimedes."
+      },
+      {
+        "question": "Độ lớn của lực đẩy Archimedes được tính bằng công thức nào?",
+        "A": "FA = d.V",
+        "B": "FA = m.g",
+        "C": "FA = P/V",
+        "D": "FA = d.g.V",
+        "answer": "A",
+        "explanation": "Công thức FA = d.V, trong đó d là trọng lượng riêng của chất lỏng (N/m³) và V là thể tích phần chất lỏng bị vật chiếm chỗ (m³). Lực đẩy bằng trọng lượng của phần chất lỏng bị vật chiếm chỗ."
+      },
+      {
+        "question": "Trong công thức FA = d.V, đại lượng d là gì?",
+        "A": "Trọng lượng riêng của vật",
+        "B": "Trọng lượng riêng của chất lỏng",
+        "C": "Khối lượng riêng của chất lỏng",
+        "D": "Trọng lượng của phần chất lỏng bị chiếm chỗ",
+        "answer": "B",
+        "explanation": "Trong công thức tính lực đẩy Archimedes, d là trọng lượng riêng của chất lỏng (không phải của vật). Ví dụ: trọng lượng riêng của nước là 10000 N/m³, của dầu hỏa là 8000 N/m³."
+      },
+      {
+        "question": "Khi vật nổi trên mặt nước, lực đẩy Archimedes so với trọng lượng của vật là:",
+        "A": "Lớn hơn trọng lượng",
+        "B": "Nhỏ hơn trọng lượng",
+        "C": "Bằng trọng lượng",
+        "D": "Gấp đôi trọng lượng",
+        "answer": "C",
+        "explanation": "Khi vật nổi cân bằng trên mặt nước, lực đẩy Archimedes bằng đúng trọng lượng của vật (FA = P). Đây là điều kiện cân bằng để vật nổi, không chìm cũng không nhô lên khỏi mặt nước."
+      },
+      {
+        "question": "Một vật có thể tích phần chìm trong nước là 0,002 m³. Trọng lượng riêng của nước là 10000 N/m³. Tính lực đẩy Archimedes tác dụng lên vật.",
+        "A": "10 N",
+        "B": "20 N",
+        "C": "15 N",
+        "D": "25 N",
+        "answer": "B",
+        "explanation": "Áp dụng công thức FA = d.V = 10000 × 0,002 = 20 N. Lực đẩy Archimedes tỉ lệ thuận với thể tích phần vật chìm trong chất lỏng, nên càng chìm sâu thì lực đẩy càng lớn."
+      },
+      {
+        "question": "Một khối gỗ nổi một phần trong nước. Khi ấn vật chìm hoàn toàn thì lực đẩy Archimedes:",
+        "A": "Giảm",
+        "B": "Không đổi",
+        "C": "Tăng",
+        "D": "Bằng không",
+        "answer": "C",
+        "explanation": "Khi vật chìm hoàn toàn, thể tích phần vật trong nước tăng lên so với khi chỉ nổi một phần, do đó theo công thức FA = d.V, lực đẩy Archimedes cũng tăng theo."
+      },
+      {
+        "question": "Hai vật cùng thể tích được thả vào hai chất lỏng khác nhau, vật nào chịu lực đẩy lớn hơn?",
+        "A": "Vật trong chất lỏng có trọng lượng riêng nhỏ hơn",
+        "B": "Vật trong chất lỏng có trọng lượng riêng lớn hơn",
+        "C": "Hai vật chịu lực đẩy như nhau",
+        "D": "Không xác định được",
+        "answer": "B",
+        "explanation": "Theo công thức FA = d.V, khi thể tích V như nhau, lực đẩy phụ thuộc vào trọng lượng riêng d của chất lỏng. Chất lỏng có trọng lượng riêng lớn hơn (như nước muối) sẽ tạo lực đẩy lớn hơn chất lỏng có trọng lượng riêng nhỏ hơn (như nước ngọt)."
+      },
+      {
+        "question": "Một vật có khối lượng 1,5 kg, thể tích 0,0015 m³. Vật có nổi trên nước không? Biết trọng lượng riêng của nước là 10000 N/m³.",
+        "A": "Vật chìm hoàn toàn",
+        "B": "Vật nổi hoàn toàn",
+        "C": "Vật lơ lửng trong nước",
+        "D": "Không xác định được",
+        "answer": "C",
+        "explanation": "Trọng lượng vật P = m.g = 1,5 × 10 = 15 N. Lực đẩy Archimedes cực đại (khi chìm hoàn toàn) FA = d.V = 10000 × 0,0015 = 15 N. Vì FA = P nên vật lơ lửng trong nước, không nổi cũng không chìm."
+      }
+    ],
+    "Đề 2 - Áp suất và khối lượng riêng": [
+      {
+        "question": "Công thức tính khối lượng riêng của một chất là:",
+        "A": "D = V/m",
+        "B": "D = m/V",
+        "C": "D = m × V",
+        "D": "D = P/V",
+        "answer": "B",
+        "explanation": "Khối lượng riêng D được tính bằng khối lượng m chia cho thể tích V (D = m/V). Đơn vị trong hệ SI là kg/m³, thường dùng cũng có g/cm³. Khối lượng riêng cho biết độ chặt của chất."
+      },
+      {
+        "question": "Đơn vị của khối lượng riêng trong hệ SI là:",
+        "A": "g/cm³",
+        "B": "N/m³",
+        "C": "kg/m³",
+        "D": "kg/cm³",
+        "answer": "C",
+        "explanation": "Trong hệ đơn vị quốc tế SI, khối lượng riêng có đơn vị là kg/m³. Tuy nhiên trong thực tế người ta cũng hay dùng g/cm³ vì thuận tiện hơn (1 g/cm³ = 1000 kg/m³)."
+      },
+      {
+        "question": "Chất lỏng gây ra áp suất lên vật theo:",
+        "A": "Một phương duy nhất",
+        "B": "Phương thẳng đứng",
+        "C": "Mọi phương",
+        "D": "Phương ngang",
+        "answer": "C",
+        "explanation": "Theo định luật Pascal, chất lỏng gây áp suất theo mọi phương lên vật nhúng trong nó. Đây là đặc tính quan trọng của chất lỏng, khác với chất rắn chỉ tác dụng áp lực theo phương vuông góc với bề mặt tiếp xúc."
+      },
+      {
+        "question": "Khi ta thả một hòn bi xuống đáy cốc nước, hòn bi chịu áp suất chất lỏng lớn hơn vì:",
+        "A": "Nước nhẹ hơn không khí",
+        "B": "Áp suất tăng theo độ sâu",
+        "C": "Áp suất giảm theo độ sâu",
+        "D": "Nước đẩy vật lên",
+        "answer": "B",
+        "explanation": "Áp suất chất lỏng tăng theo độ sâu theo công thức p = d.h, trong đó h là độ sâu. Càng xuống sâu, áp suất càng lớn do trọng lượng cột chất lỏng phía trên càng lớn."
+      },
+      {
+        "question": "Khi biết khối lượng riêng của vật liệu làm vật, ta có thể xác định:",
+        "A": "Khối lượng vật",
+        "B": "Thể tích vật",
+        "C": "Chất cấu tạo nên vật",
+        "D": "Trọng lượng vật",
+        "answer": "C",
+        "explanation": "Mỗi chất có một khối lượng riêng đặc trưng (ví dụ: sắt 7800 kg/m³, nhôm 2700 kg/m³). Khi biết khối lượng riêng, ta có thể nhận biết chất cấu tạo nên vật bằng cách so sánh với bảng khối lượng riêng các chất."
+      },
+      {
+        "question": "Áp suất khí quyển tồn tại vì:",
+        "A": "Không khí không có trọng lượng",
+        "B": "Không khí bao quanh Trái Đất và có trọng lượng",
+        "C": "Do gió và mưa tạo nên",
+        "D": "Do Trái Đất quay quanh Mặt Trời",
+        "answer": "B",
+        "explanation": "Áp suất khí quyển được tạo ra do trọng lượng của lớp không khí bao quanh Trái Đất. Lớp khí quyển dày khoảng 100km và có trọng lượng đáng kể, tạo áp suất khoảng 101325 Pa ở mực nước biển."
+      },
+      {
+        "question": "Một vật có khối lượng 300g và thể tích 100cm³. Khối lượng riêng của vật là:",
+        "A": "30 kg/m³",
+        "B": "0,3 g/cm³",
+        "C": "3 g/cm³",
+        "D": "3000 kg/m³",
+        "answer": "C",
+        "explanation": "Áp dụng công thức D = m/V = 300g / 100cm³ = 3 g/cm³. Vật này có thể là nhôm (khối lượng riêng khoảng 2,7 g/cm³) hoặc một hợp kim có tỷ trọng tương tự."
+      },
+      {
+        "question": "Khi ta lặn xuống hồ sâu, cảm giác nặng tai hơn là do:",
+        "A": "Không khí loãng hơn",
+        "B": "Áp suất nước tăng theo độ sâu",
+        "C": "Tai phản ứng chậm",
+        "D": "Cơ thể mệt mỏi",
+        "answer": "B",
+        "explanation": "Khi lặn sâu, áp suất nước tăng lên và tác động lên màng nhĩ, gây cảm giác nặng tai. Cứ xuống sâu 10m thì áp suất tăng thêm khoảng 1 atm (tương đương áp suất khí quyển)."
+      },
+      {
+        "question": "Khi ấn chặt giác hút cao su lên mặt kính, giác hút bám chặt là do:",
+        "A": "Tính đàn hồi của cao su",
+        "B": "Áp suất khí quyển bên ngoài lớn hơn bên trong giác hút",
+        "C": "Trọng lực của Trái Đất",
+        "D": "Nước trong giác hút bị nén",
+        "answer": "B",
+        "explanation": "Khi ấn giác hút, không khí bên trong bị đẩy ra, tạo áp suất thấp hơn bên ngoài. Áp suất khí quyển bên ngoài ép giác hút vào mặt kính, giúp nó bám chặt."
+      },
+      {
+        "question": "Một khối sắt có thể tích 0,02 m³ và khối lượng riêng 7800 kg/m³. Tính khối lượng của khối sắt.",
+        "A": "15,6 kg",
+        "B": "156 kg",
+        "C": "1560 kg",
+        "D": "0,156 kg",
+        "answer": "B",
+        "explanation": "Từ công thức D = m/V, suy ra m = D × V = 7800 × 0,02 = 156 kg. Đây là khối lượng của một khối sắt khá lớn, khoảng bằng trọng lượng của hai người trưởng thành."
+      }
+    ]
+  },
+  "Hóa Học": {
+    "Đề 2 - Dung dịch": [
+      {
+        "question": "Khi thổi khí CO₂ vào nước vôi trong, hiện tượng nào xảy ra?",
+        "A": "Không có gì",
+        "B": "Nước vôi trong đục",
+        "C": "Có khí thoát ra",
+        "D": "Màu nước thay đổi sang đỏ",
+        "answer": "B",
+        "explanation": "Phản ứng CO₂ + Ca(OH)₂ → CaCO₃↓ + H₂O tạo kết tủa CaCO₃ màu trắng làm đục dung dịch. Đây là phản ứng nhận biết khí CO₂, thường dùng trong phòng thí nghiệm."
+      },
+      {
+        "question": "Chất nào sau đây tan tốt trong nước?",
+        "A": "Cát",
+        "B": "Dầu ăn",
+        "C": "Muối ăn",
+        "D": "Bột phấn",
+        "answer": "C",
+        "explanation": "Muối ăn (NaCl) là chất điện ly mạnh, tan rất tốt trong nước tạo dung dịch đồng nhất. Cát, dầu và bột phấn đều không tan hoặc tan rất kém trong nước."
+      },
+      {
+        "question": "Dung dịch bão hòa là dung dịch:",
+        "A": "Không thể hòa tan thêm chất tan ở nhiệt độ xác định",
+        "B": "Có thể hòa tan thêm nhiều chất tan",
+        "C": "Có ít chất tan",
+        "D": "Có nhiều nước",
+        "answer": "A",
+        "explanation": "Dung dịch bão hòa là dung dịch đã hòa tan tối đa lượng chất tan có thể ở nhiệt độ xác định. Nếu thêm chất tan vào sẽ không tan nữa mà lắng xuống đáy."
+      },
+      {
+        "question": "Để làm tăng độ tan của một chất rắn vào nước, ta có thể:",
+        "A": "Hạ nhiệt độ",
+        "B": "Tăng nhiệt độ",
+        "C": "Thêm dầu vào",
+        "D": "Để yên không khuấy",
+        "answer": "B",
+        "explanation": "Đối với hầu hết các chất rắn, độ tan tăng khi nhiệt độ tăng. Ví dụ: đường tan nhiều hơn trong nước nóng so với nước lạnh. Khuấy đều cũng giúp quá trình hòa tan nhanh hơn."
+      },
+      {
+        "question": "Nồng độ mol của dung dịch được tính bằng công thức:",
+        "A": "CM = n/V",
+        "B": "CM = m/V",
+        "C": "CM = V/n",
+        "D": "CM = n × V",
+        "answer": "A",
+        "explanation": "Nồng độ mol CM = n/V, trong đó n là số mol chất tan (mol) và V là thể tích dung dịch (lít). Đơn vị của CM là mol/l hay M (molar)."
+      },
+      {
+        "question": "Trong nước biển có hòa tan nhiều muối, đó là dung dịch:",
+        "A": "Không đồng nhất",
+        "B": "Đồng nhất",
+        "C": "Hỗn hợp rắn",
+        "D": "Chất tinh khiết",
+        "answer": "B",
+        "explanation": "Nước biển là dung dịch đồng nhất chứa nhiều loại muối (chủ yếu là NaCl) hòa tan hoàn toàn. Các ion phân tán đều trong nước, không nhìn thấy được bằng mắt thường."
+      },
+      {
+        "question": "Khi pha loãng dung dịch, ta cần thêm:",
+        "A": "Chất tan",
+        "B": "Dung môi",
+        "C": "Cả chất tan và dung môi",
+        "D": "Không thêm gì",
+        "answer": "B",
+        "explanation": "Pha loãng dung dịch là giảm nồng độ bằng cách thêm dung môi (thường là nước), không thêm chất tan. Lượng chất tan không đổi nhưng thể tích dung dịch tăng lên."
+      },
+      {
+        "question": "Một dung dịch có khối lượng 500g, trong đó có 50g muối. Nồng độ phần trăm của dung dịch là:",
+        "A": "5%",
+        "B": "10%",
+        "C": "15%",
+        "D": "20%",
+        "answer": "B",
+        "explanation": "C% = (khối lượng chất tan / khối lượng dung dịch) × 100% = (50/500) × 100% = 10%. Đây là công thức cơ bản tính nồng độ phần trăm."
+      },
+      {
+        "question": "Để tạo dung dịch đường đậm đặc hơn, ta có thể:",
+        "A": "Thêm nước",
+        "B": "Thêm đường",
+        "C": "Đun sôi cho bay hơi nước",
+        "D": "Cả B và C đúng",
+        "answer": "D",
+        "explanation": "Để tăng nồng độ có thể: thêm chất tan (đường) hoặc làm bay hơi dung môi (nước) bằng cách đun nóng. Cả hai cách đều làm tỉ lệ chất tan/dung dịch tăng lên."
+      },
+      {
+        "question": "Khi pha chế dung dịch axit trong phòng thí nghiệm, ta phải:",
+        "A": "Rót nước vào axit",
+        "B": "Rót axit vào nước",
+        "C": "Rót đồng thời cả hai",
+        "D": "Không cần chú ý",
+        "answer": "B",
+        "explanation": "Nguyên tắc an toàn: luôn rót axit từ từ vào nước, không bao giờ làm ngược lại. Vì axit tan tỏa nhiều nhiệt, nếu rót nước vào axit có thể gây sôi bắn nguy hiểm."
+      }
+    ]
+  },
+  "Sinh Học": {
+    "Đề 1 - Quang hợp": [
+      {
+        "question": "Quang hợp là quá trình:",
+        "A": "Cây hấp thụ nước",
+        "B": "Cây tạo chất hữu cơ từ CO₂ và H₂O nhờ ánh sáng",
+        "C": "Cây hô hấp",
+        "D": "Cây sinh trưởng",
+        "answer": "B",
+        "explanation": "Quang hợp là quá trình cây xanh sử dụng năng lượng ánh sáng, CO₂ và H₂O để tạo ra glucose (C₆H₁₂O₆) và O₂. Đây là quá trình quan trọng nhất cung cấp năng lượng cho sự sống trên Trái Đất."
+      },
+      {
+        "question": "Bộ phận nào của cây thực hiện quang hợp chủ yếu?",
+        "A": "Rễ",
+        "B": "Thân",
+        "C": "Lá",
+        "D": "Hoa",
+        "answer": "C",
+        "explanation": "Lá là cơ quan quang hợp chính vì chứa nhiều diệp lục (chlorophyll) trong lục lạp. Lá có cấu trúc phẳng, mỏng để tối đa hóa diện tích hấp thụ ánh sáng."
+      },
+      {
+        "question": "Chất diệp lục có màu gì?",
+        "A": "Đỏ",
+        "B": "Vàng",
+        "C": "Xanh",
+        "D": "Tím",
+        "answer": "C",
+        "explanation": "Diệp lục (chlorophyll) có màu xanh và có vai trò hấp thụ năng lượng ánh sáng để thực hiện quang hợp. Đó là lý do lá cây có màu xanh."
+      },
+      {
+        "question": "Trong quang hợp, cây hấp thụ khí gì từ không khí?",
+        "A": "O₂",
+        "B": "N₂",
+        "C": "CO₂",
+        "D": "H₂",
+        "answer": "C",
+        "explanation": "Cây hấp thụ CO₂ từ không khí qua khí khổng trên lá. CO₂ là nguyên liệu chính để tạo glucose trong quá trình quang hợp."
+      },
+      {
+        "question": "Sản phẩm của quang hợp là:",
+        "A": "Glucose và O₂",
+        "B": "CO₂ và H₂O",
+        "C": "Protein và lipid",
+        "D": "Chỉ có O₂",
+        "answer": "A",
+        "explanation": "Phương trình quang hợp: 6CO₂ + 6H₂O + ánh sáng → C₆H₁₂O₆ + 6O₂. Glucose được dùng làm nguồn năng lượng và nguyên liệu xây dựng cơ thể, O₂ thải ra ngoài."
+      },
+      {
+        "question": "Yếu tố nào không cần thiết cho quang hợp?",
+        "A": "Ánh sáng",
+        "B": "Nước",
+        "C": "CO₂",
+        "D": "Âm thanh",
+        "answer": "D",
+        "explanation": "Quang hợp cần: ánh sáng (năng lượng), CO₂ (nguyên liệu), H₂O (nguyên liệu) và diệp lục (chất xúc tác). Âm thanh không liên quan đến quá trình này."
+      },
+      {
+        "question": "Thời điểm nào cây quang hợp mạnh nhất?",
+        "A": "Ban đêm",
+        "B": "Buổi sáng có nắng",
+        "C": "Trời mưa",
+        "D": "Hoàng hôn",
+        "answer": "B",
+        "explanation": "Cây quang hợp mạnh nhất khi có ánh sáng mặt trời đủ mạnh, thường là buổi sáng và trưa. Ban đêm không có ánh sáng nên cây không quang hợp."
+      },
+      {
+        "question": "Oxygen do cây thải ra trong quang hợp có nguồn gốc từ:",
+        "A": "CO₂",
+        "B": "Glucose",
+        "C": "H₂O",
+        "D": "Không khí",
+        "answer": "C",
+        "explanation": "Các nghiên cứu với đồng vị O-18 chứng minh oxygen thải ra có nguồn gốc từ H₂O, không phải từ CO₂. Đây là khám phá quan trọng về cơ chế quang hợp."
+      },
+      {
+        "question": "Cây trồng trong bóng tối sẽ:",
+        "A": "Quang hợp mạnh hơn",
+        "B": "Không quang hợp được",
+        "C": "Quang hợp bình thường",
+        "D": "Chỉ hấp thụ CO₂",
+        "answer": "B",
+        "explanation": "Không có ánh sáng thì không có quang hợp vì không có năng lượng để thực hiện phản ứng chuyển hóa CO₂ và H₂O thành glucose."
+      },
+      {
+        "question": "Ý nghĩa của quang hợp đối với đời sống là:",
+        "A": "Tạo oxygen cho sinh vật hô hấp",
+        "B": "Tạo chất hữu cơ làm thức ăn",
+        "C": "Giảm CO₂ trong khí quyển",
+        "D": "Cả A, B và C đều đúng",
+        "answer": "D",
+        "explanation": "Quang hợp có vai trò vô cùng quan trọng: cung cấp oxygen cho hô hấp, tạo nguồn thức ăn cho mọi sinh vật, và giúp điều hòa khí quyển bằng cách hấp thụ CO₂."
+      }
+    ],
+    "Đề 2 - Hô hấp ở thực vật": [
+      {
+        "question": "Hô hấp ở thực vật là quá trình:",
+        "A": "Hấp thụ O₂ và thải CO₂",
+        "B": "Phân giải chất hữu cơ để giải phóng năng lượng",
+        "C": "Tạo chất hữu cơ",
+        "D": "Hấp thụ nước",
+        "answer": "B",
+        "explanation": "Hô hấp là quá trình oxy hóa glucose để giải phóng năng lượng: C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + năng lượng. Năng lượng này dùng cho các hoạt động sống."
+      },
+      {
+        "question": "Cây hô hấp vào thời điểm nào?",
+        "A": "Chỉ ban ngày",
+        "B": "Chỉ ban đêm",
+        "C": "Cả ngày lẫn đêm",
+        "D": "Không hô hấp",
+        "answer": "C",
+        "explanation": "Cây hô hấp liên tục cả ngày lẫn đêm để cung cấp năng lượng cho các hoạt động sống. Ban ngày cây vừa quang hợp vừa hô hấp, ban đêm chỉ hô hấp."
+      },
+      {
+        "question": "So với quang hợp, hô hấp ở cây:",
+        "A": "Diễn ra ngược lại",
+        "B": "Giống hệt nhau",
+        "C": "Không liên quan",
+        "D": "Chỉ xảy ra ở rễ",
+        "answer": "A",
+        "explanation": "Hô hấp và quang hợp là hai quá trình ngược nhau: quang hợp tạo glucose và O₂ từ CO₂ và H₂O, hô hấp phân giải glucose và O₂ thành CO₂ và H₂O."
+      },
+      {
+        "question": "Bộ phận nào của cây không thực hiện hô hấp?",
+        "A": "Rễ",
+        "B": "Thân",
+        "C": "Lá",
+        "D": "Tất cả đều hô hấp",
+        "answer": "D",
+        "explanation": "Mọi bộ phận sống của cây đều hô hấp (rễ, thân, lá, hoa, quả) vì đều cần năng lượng để duy trì hoạt động sống."
+      },
+      {
+        "question": "Trong hô hấp, cây hấp thụ khí gì?",
+        "A": "CO₂",
+        "B": "O₂",
+        "C": "N₂",
+        "D": "H₂",
+        "answer": "B",
+        "explanation": "Cây hấp thụ O₂ để oxy hóa glucose, giải phóng năng lượng. Đây là quá trình hô hấp hiếu khí, tương tự như động vật."
+      },
+      {
+        "question": "Năng lượng giải phóng từ hô hấp được dùng để:",
+        "A": "Sinh trưởng và phát triển",
+        "B": "Vận chuyển chất",
+        "C": "Tổng hợp chất mới",
+        "D": "Cả A, B và C",
+        "answer": "D",
+        "explanation": "Năng lượng từ hô hấp dùng cho mọi hoạt động sống: sinh trưởng, vận chuyển nước và chất khoáng, tổng hợp protein, lipid, và các hoạt động khác."
+      },
+      {
+        "question": "Ban đêm, cây:",
+        "A": "Vừa quang hợp vừa hô hấp",
+        "B": "Chỉ quang hợp",
+        "C": "Chỉ hô hấp",
+        "D": "Ngừng mọi hoạt động",
+        "answer": "C",
+        "explanation": "Ban đêm không có ánh sáng nên cây không quang hợp, chỉ hô hấp. Vì vậy ban đêm cây hấp thụ O₂ và thải CO₂."
+      },
+      {
+        "question": "Hô hấp xảy ra ở bộ phận tế bào nào?",
+        "A": "Nhân",
+        "B": "Ti thể",
+        "C": "Lục lạp",
+        "D": "Thành tế bào",
+        "answer": "B",
+        "explanation": "Hô hấp tế bào xảy ra chủ yếu trong ti thể (mitochondria), nơi glucose được oxy hóa hoàn toàn để tạo ATP - đơn vị năng lượng của tế bào."
+      },
+      {
+        "question": "Nếu cây thiếu oxygen, hô hấp sẽ:",
+        "A": "Diễn ra mạnh hơn",
+        "B": "Bị ức chế hoặc chuyển sang hô hấp yếm khí",
+        "C": "Không bị ảnh hưởng",
+        "D": "Ngừng hẳn",
+        "answer": "B",
+        "explanation": "Thiếu O₂, hô hấp hiếu khí bị ức chế, cây có thể chuyển sang hô hấp yếm khí (không cần O₂) nhưng hiệu suất thấp hơn nhiều, không đủ năng lượng cho cây phát triển tốt."
+      },
+      {
+        "question": "Tại sao không nên để nhiều cây trong phòng ngủ kín ban đêm?",
+        "A": "Cây tỏa mùi hôi",
+        "B": "Cây hô hấp tiêu thụ O₂ và thải CO₂",
+        "C": "Cây gây ồn",
+        "D": "Cây hút sạch độ ẩm",
+        "answer": "B",
+        "explanation": "Ban đêm cây chỉ hô hấp (hấp thụ O₂, thải CO₂) không quang hợp. Trong phòng kín, nhiều cây sẽ làm giảm O₂ và tăng CO₂, gây khó thở cho người ngủ."
+      }
+    ]
+  }
+}
