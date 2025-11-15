@@ -9,7 +9,7 @@ import PyPDF2
 
 API_KEY = "AIzaSyDsN-HoFzthjs4tU2qjLLf5mjLB6gpDSA8"
 genai.configure(api_key=API_KEY)
-model = genai.GenerativeModel("gemini-2.0-flash-exp")
+model = genai.GenerativeModel("gemini-2.0-flash")
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(32)
