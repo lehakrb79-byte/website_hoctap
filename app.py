@@ -754,52 +754,28 @@ def stem():
         ],
         "Hóa": [
             {
-                "id": "build_atom",
-                "title": "Xây dựng nguyên tử",
-                "category": "Cấu tạo nguyên tử",
-                "desc": "Tạo nguyên tử từ proton, neutron và electron",
+                "id": "build_molecule",
+                "title": "Xây dựng phân tử",
+                "category": "Hóa học phân tử",
+                "desc": "Tạo các phân tử từ nguyên tử, tìm hiểu về liên kết hóa học",
                 "difficulty": "Dễ",
-                "phet_url": "https://phet.colorado.edu/sims/html/build-an-atom/latest/build-an-atom_all.html"
+                "phet_url": "https://phet.colorado.edu/sims/html/build-a-molecule/latest/build-a-molecule_all.html"
             },
             {
-                "id": "molecule_shapes",
-                "title": "Hình dạng phân tử",
-                "category": "Liên kết hóa học",
-                "desc": "Khám phá hình dạng và cấu trúc của các phân tử",
-                "difficulty": "Trung bình",
-                "phet_url": "https://phet.colorado.edu/sims/html/molecule-shapes/latest/molecule-shapes_all.html"
-            },
-            {
-                "id": "ph_scale",
-                "title": "Thang đo pH",
-                "category": "Axit - Bazơ",
-                "desc": "Đo pH của các dung dịch axit, bazơ và trung tính",
-                "difficulty": "Dễ",
-                "phet_url": "https://phet.colorado.edu/sims/html/ph-scale/latest/ph-scale_all.html"
-            },
-            {
-                "id": "acid_base_solutions",
-                "title": "Dung dịch axit-bazơ",
-                "category": "Axit - Bazơ",
-                "desc": "Nghiên cứu tính chất của dung dịch axit và bazơ",
-                "difficulty": "Trung bình",
-                "phet_url": "https://phet.colorado.edu/sims/html/acid-base-solutions/latest/acid-base-solutions_all.html"
-            },
-            {
-                "id": "reactants_products",
-                "title": "Chất phản ứng và sản phẩm",
+                "id": "balancing_equations",
+                "title": "Cân bằng phương trình hóa học",
                 "category": "Phản ứng hóa học",
-                "desc": "Quan sát và cân bằng các phản ứng hóa học",
+                "desc": "Luyện tập cân bằng các phương trình hóa học theo định luật bảo toàn khối lượng",
                 "difficulty": "Trung bình",
-                "phet_url": "https://phet.colorado.edu/sims/html/reactants-products-and-leftovers/latest/reactants-products-and-leftovers_all.html"
+                "phet_url": "https://phet.colorado.edu/vi/simulations/balancing-chemical-equations"
             },
             {
-                "id": "states_matter",
-                "title": "Trạng thái của vật chất",
-                "category": "Trạng thái vật chất",
-                "desc": "Khám phá rắn, lỏng, khí và chuyển đổi trạng thái",
+                "id": "states_of_matter",
+                "title": "Trạng thái vật chất",
+                "category": "Hóa lý",
+                "desc": "Khám phá ba trạng thái của vật chất: rắn, lỏng, khí và sự chuyển pha",
                 "difficulty": "Dễ",
-                "phet_url": "https://phet.colorado.edu/sims/html/states-of-matter/latest/states-of-matter_all.html"
+                "phet_url": "https://phet.colorado.edu/sims/html/states-of-matter-basics/latest/states-of-matter-basics_all.html"
             }
         ],
         "Sinh": [
@@ -810,46 +786,6 @@ def stem():
                 "desc": "Tìm hiểu cách gen điều khiển tổng hợp protein",
                 "difficulty": "Khó",
                 "phet_url": "https://phet.colorado.edu/sims/html/gene-expression-essentials/latest/gene-expression-essentials_all.html"
-            },
-            {
-                "id": "natural_selection",
-                "title": "Chọn lọc tự nhiên",
-                "category": "Tiến hóa",
-                "desc": "Mô phỏng quá trình chọn lọc tự nhiên",
-                "difficulty": "Trung bình",
-                "phet_url": "https://phet.colorado.edu/sims/html/natural-selection/latest/natural-selection_all.html"
-            },
-            {
-                "id": "neuron",
-                "title": "Tế bào thần kinh",
-                "category": "Sinh lý người",
-                "desc": "Khám phá cách tế bào thần kinh truyền tín hiệu",
-                "difficulty": "Trung bình",
-                "phet_url": "https://phet.colorado.edu/sims/html/neuron/latest/neuron_all.html"
-            },
-            {
-                "id": "build_molecule",
-                "title": "Xây dựng phân tử sinh học",
-                "category": "Sinh hóa",
-                "desc": "Tạo các phân tử hữu cơ và sinh học",
-                "difficulty": "Dễ",
-                "phet_url": "https://phet.colorado.edu/sims/html/build-a-molecule/latest/build-a-molecule_all.html"
-            },
-            {
-                "id": "cell_structure",
-                "title": "Cấu trúc tế bào",
-                "category": "Tế bào học",
-                "desc": "Khám phá cấu trúc và chức năng của tế bào",
-                "difficulty": "Dễ",
-                "phet_url": "https://phet.colorado.edu/sims/html/cell-structure/latest/cell-structure_all.html"
-            },
-            {
-                "id": "biomolecules",
-                "title": "Phân tử sinh học",
-                "category": "Sinh hóa",
-                "desc": "Tìm hiểu về protein, lipid, carbohydrate và DNA",
-                "difficulty": "Trung bình",
-                "phet_url": "https://phet.colorado.edu/sims/html/biomolecules/latest/biomolecules_all.html"
             }
         ]
     }
