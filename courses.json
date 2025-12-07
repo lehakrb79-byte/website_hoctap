@@ -1,0 +1,95 @@
+{
+    "courses": [
+        {
+            "id": "course_1",
+            "teacher_id": "gv001",
+            "teacher_name": "Cô Nguyễn Thị A",
+            "title": "Toán 8 - Học kỳ 1",
+            "subject": "toan",
+            "description": "...",
+            "thumbnail": "url_image",
+            "created_at": "..."
+        },
+        {
+            "id": "course_2",
+            "teacher_id": "gv002",
+            "teacher_name": "dlhhdh",
+            "title": "test",
+            "subject": "toan",
+            "description": "các bạn hãy hoàn thành bài học này trước 24h",
+            "thumbnail": "",
+            "created_at": "2025-12-06 18:53:38"
+        }
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "course_id": "course_1",
+            "title": "Bài 1: Phân tích đa thức",
+            "order": 1,
+            "video_type": "youtube",
+            "video_link": "https://youtube.com/embed/...",
+            "document_link": "https://drive.google.com/file/.../preview",
+            "content": "Nội dung bài học...",
+            "quiz": [
+                {
+                    "question": "...",
+                    "A": "...",
+                    "B": "...",
+                    "C": "...",
+                    "D": "...",
+                    "answer": "A"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "course_id": "course_2",
+            "title": "định lí abcd",
+            "order": 1,
+            "video_type": "youtube",
+            "video_link": "https://www.youtube.com/embed/qmsLbGPD4o8",
+            "document_link": "",
+            "content": "xem video bài giảng",
+            "quiz": [
+                {
+                    "question": "hadaaa",
+                    "A": "aaaaa",
+                    "B": "bbbb",
+                    "C": "ccc",
+                    "D": "ddd",
+                    "answer": "A"
+                },
+                {
+                    "question": "sádsfd",
+                    "A": "a",
+                    "B": "b",
+                    "C": "v",
+                    "D": "x",
+                    "answer": "C"
+                }
+            ],
+            "created_at": "2025-12-07 21:49:37"
+        }
+    ],
+    "student_progress": [
+        {
+            "student_id": "hs0001",
+            "course_id": "course_1",
+            "lesson_id": "lesson_1",
+            "score": 80,
+            "completed": true,
+            "attempts": 2,
+            "last_attempt": "2024-01-15 14:30:00"
+        },
+        {
+            "student_id": "hs0002",
+            "course_id": "course_2",
+            "lesson_id": "lesson_2",
+            "score": 100.0,
+            "completed": true,
+            "attempts": 1,
+            "last_attempt": "2025-12-07 21:53:16"
+        }
+    ]
+}

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo khóa học mới</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .form-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .form-header i {
+            font-size: 60px;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .btn-create {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 12px 40px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        .btn-create:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        .subject-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .subject-option {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .subject-option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+        .subject-option input[type="radio"] {
+            display: none;
+        }
+        .subject-option input[type="radio"]:checked + label {
+            color: white;
+        }
+        .subject-option.active {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .subject-option i {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('teacher_dashboard') }}">
+                <i class="fas fa-chalkboard-teacher me-2"></i>HỌC VUI - Giáo viên
+            </a>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="form-container">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="form-card">
+                <div class="form-header">
+                    <i class="fas fa-plus-circle"></i>
+                    <h3>Tạo khóa học mới</h3>
+                    <p class="text-muted mb-0">Điền thông tin để tạo khóa học của bạn</p>
+                </div>
+
+                <form method="POST" id="courseForm">
+                    <!-- Title -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">
+                            Tên khóa học <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control form-control-lg" name="title" 
+                               placeholder="VD: Toán 8 - Học kỳ 1" required>
+                        <small class="text-muted">Tên khóa học nên rõ ràng và dễ hiểu</small>
+                    </div>
+
+                    <!-- Subject -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">
+                            Môn học <span class="text-danger">*</span>
+                        </label>
+                        <div class="subject-selector">
+                            <div class="subject-option" onclick="selectSubject(this, 'toan')">
+                                <input type="radio" name="subject" value="toan" id="subject_toan" required>
+                                <label for="subject_toan" style="cursor: pointer; margin: 0;">
+                                    <i class="fas fa-calculator"></i>
+                                    <div>Toán</div>
+                                </label>
+                            </div>
+                            
+                            <div class="subject-option" onclick="selectSubject(this, 'ly')">
+                                <input type="radio" name="subject" value="ly" id="subject_ly">
+                                <label for="subject_ly" style="cursor: pointer; margin: 0;">
+                                    <i class="fas fa-atom"></i>
+                                    <div>Vật Lý</div>
+                                </label>
+                            </div>
+                            
+                            <div class="subject-option" onclick="selectSubject(this, 'hoa')">
+                                <input type="radio" name="subject" value="hoa" id="subject_hoa">
+                                <label for="subject_hoa" style="cursor: pointer; margin: 0;">
+                                    <i class="fas fa-flask"></i>
+                                    <div>Hóa học</div>
+                                </label>
+                            </div>
+                            
+                            <div class="subject-option" onclick="selectSubject(this, 'sinh')">
+                                <input type="radio" name="subject" value="sinh" id="subject_sinh">
+                                <label for="subject_sinh" style="cursor: pointer; margin: 0;">
+                                    <i class="fas fa-dna"></i>
+                                    <div>Sinh học</div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Mô tả khóa học</label>
+                        <textarea class="form-control" name="description" rows="5" 
+                                  placeholder="Nhập mô tả chi tiết về khóa học, mục tiêu học tập, đối tượng học viên..."></textarea>
+                        <small class="text-muted">Mô tả giúp học sinh hiểu rõ hơn về khóa học</small>
+                    </div>
+
+                    <!-- Thumbnail -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Link ảnh bìa (tùy chọn)</label>
+                        <input type="url" class="form-control" name="thumbnail" 
+                               placeholder="https://example.com/image.jpg">
+                        <small class="text-muted">URL ảnh đại diện cho khóa học</small>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex gap-2 justify-content-end">
+                        <a href="{{ url_for('teacher_dashboard') }}" class="btn btn-secondary btn-lg">
+                            <i class="fas fa-times me-2"></i>Hủy
+                        </a>
+                        <button type="submit" class="btn btn-create btn-lg">
+                            <i class="fas fa-check me-2"></i>Tạo khóa học
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function selectSubject(element, subject) {
+            // Remove active class from all
+            document.querySelectorAll('.subject-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            
+            // Add active class to selected
+            element.classList.add('active');
+            
+            // Check the radio button
+            document.getElementById(`subject_${subject}`).checked = true;
+        }
+
+        // Form validation
+        document.getElementById('courseForm').addEventListener('submit', function(e) {
+            const title = document.querySelector('[name="title"]').value.trim();
+            const subject = document.querySelector('[name="subject"]:checked');
+
+            if (!title) {
+                e.preventDefault();
+                alert('Vui lòng nhập tên khóa học!');
+                return;
+            }
+
+            if (!subject) {
+                e.preventDefault();
+                alert('Vui lòng chọn môn học!');
+                return;
+            }
+        });
+    </script>
+</body>
+</html>

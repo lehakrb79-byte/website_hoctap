@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Học sinh</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+        }
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 30px;
+            border-radius: 0 0 20px 20px;
+        }
+        .course-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            overflow: hidden;
+            height: 100%;
+        }
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .course-thumbnail {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            color: white;
+        }
+        .course-body {
+            padding: 20px;
+        }
+        .progress {
+            height: 8px;
+            border-radius: 10px;
+        }
+        .badge-subject {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        .stats-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .filter-btn {
+            margin: 5px;
+            border-radius: 20px;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .empty-state i {
+            font-size: 80px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('student_dashboard') }}">
+                <i class="fas fa-graduation-cap me-2"></i>HỌC VUI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('student_dashboard') }}">
+                            <i class="fas fa-home me-1"></i>Khóa học
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('student_progress') }}">
+                            <i class="fas fa-chart-line me-1"></i>Tiến độ
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-1"></i>{{ fullname }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('index') }}">
+                                <i class="fas fa-home me-2"></i>Trang chủ
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('logout') }}">
+                                <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Welcome Banner -->
+    <div class="welcome-banner">
+        <div class="container">
+            <h2><i class="fas fa-hand-sparkles me-2"></i>Xin chào, {{ fullname }}!</h2>
+            <p class="mb-0">Sẵn sàng học tập và khám phá kiến thức mới hôm nay chưa?</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mb-5">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Filter Buttons -->
+        <div class="text-center mb-4">
+            <button class="btn btn-primary filter-btn active" data-filter="all">
+                <i class="fas fa-th me-1"></i>Tất cả
+            </button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="toan">
+                <i class="fas fa-calculator me-1"></i>Toán
+            </button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="ly">
+                <i class="fas fa-atom me-1"></i>Vật Lý
+            </button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="hoa">
+                <i class="fas fa-flask me-1"></i>Hóa học
+            </button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="sinh">
+                <i class="fas fa-dna me-1"></i>Sinh học
+            </button>
+        </div>
+
+        <!-- Courses Grid -->
+        {% if courses %}
+        <div class="row" id="coursesGrid">
+            {% for course in courses %}
+            <div class="col-lg-4 col-md-6 mb-4 course-item" data-subject="{{ course.subject }}">
+                <div class="card course-card">
+                    <div class="course-thumbnail">
+                        {% if course.subject == 'toan' %}
+                            <i class="fas fa-calculator"></i>
+                        {% elif course.subject == 'ly' %}
+                            <i class="fas fa-atom"></i>
+                        {% elif course.subject == 'hoa' %}
+                            <i class="fas fa-flask"></i>
+                        {% elif course.subject == 'sinh' %}
+                            <i class="fas fa-dna"></i>
+                        {% else %}
+                            <i class="fas fa-book"></i>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="course-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title mb-0">{{ course.title }}</h5>
+                            <span class="badge badge-subject bg-primary">
+                                {{ course.subject|upper }}
+                            </span>
+                        </div>
+                        
+                        <p class="text-muted small mb-2">
+                            <i class="fas fa-user-tie me-1"></i>{{ course.teacher_name }}
+                        </p>
+                        
+                        <p class="card-text text-muted small">
+                            {{ course.description[:100] }}{% if course.description|length > 100 %}...{% endif %}
+                        </p>
+                        
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <small class="text-muted">Tiến độ</small>
+                                <small class="text-muted">
+                                    {{ course.completed_lessons }}/{{ course.total_lessons }} bài
+                                </small>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-success" role="progressbar" 
+                                     style="width: {{ course.progress_percent }}%">
+                                </div>
+                            </div>
+                            <small class="text-success fw-bold">{{ course.progress_percent }}%</small>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <a href="{{ url_for('student_course_detail', course_id=course.id) }}" 
+                               class="btn btn-primary">
+                                <i class="fas fa-play me-2"></i>
+                                {% if course.progress_percent > 0 %}Tiếp tục học{% else %}Bắt đầu học{% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-book-open"></i>
+            <h4>Chưa có khóa học nào</h4>
+            <p class="text-muted">Hiện tại chưa có khóa học nào được tạo. Hãy quay lại sau nhé!</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Filter courses by subject
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const courseItems = document.querySelectorAll('.course-item');
+        
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Update active button
+                filterBtns.forEach(b => {
+                    b.classList.remove('active', 'btn-primary');
+                    b.classList.add('btn-outline-primary');
+                });
+                this.classList.remove('btn-outline-primary');
+                this.classList.add('active', 'btn-primary');
+                
+                // Filter courses
+                const filter = this.getAttribute('data-filter');
+                
+                courseItems.forEach(item => {
+                    if (filter === 'all' || item.getAttribute('data-subject') === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

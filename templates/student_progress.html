@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiến độ học tập</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .header-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        .course-progress-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .course-title-section {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .lesson-progress-item {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .lesson-progress-item.completed {
+            background: #f0f9ff;
+            border-color: #28a745;
+        }
+        .score-badge {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        .overall-stats {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+        }
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 15px;
+        }
+        .empty-state i {
+            font-size: 80px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('student_dashboard') }}">
+                <i class="fas fa-graduation-cap me-2"></i>HỌC VUI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('student_dashboard') }}">
+                            <i class="fas fa-home me-1"></i>Khóa học
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('student_progress') }}">
+                            <i class="fas fa-chart-line me-1"></i>Tiến độ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">
+                            <i class="fas fa-sign-out-alt me-1"></i>Đăng xuất
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Banner -->
+    <div class="header-banner">
+        <div class="container">
+            <h2><i class="fas fa-chart-line me-2"></i>Tiến độ học tập của bạn</h2>
+            <p class="mb-0">Theo dõi kết quả học tập và cải thiện bản thân mỗi ngày</p>
+        </div>
+    </div>
+
+    <div class="container mb-5">
+        {% if courses_progress %}
+        <!-- Overall Statistics -->
+        <div class="overall-stats">
+            <h4 class="mb-4"><i class="fas fa-chart-pie me-2"></i>Thống kê tổng quan</h4>
+            <div class="row">
+                {% set total_courses = courses_progress|length %}
+                {% set total_lessons = courses_progress.values()|sum(attribute='lessons')|length %}
+                {% set completed_lessons = 0 %}
+                {% set total_score = 0 %}
+                {% set score_count = 0 %}
+                
+                {% for course_id, data in courses_progress.items() %}
+                    {% for item in data.lessons %}
+                        {% if item.progress.completed %}
+                            {% set completed_lessons = completed_lessons + 1 %}
+                        {% endif %}
+                        {% if item.progress.score %}
+                            {% set total_score = total_score + item.progress.score %}
+                            {% set score_count = score_count + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <div class="stat-number">{{ total_courses }}</div>
+                        <div class="stat-label">Khóa học đang học</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <div class="stat-number">{{ completed_lessons }}</div>
+                        <div class="stat-label">Bài đã hoàn thành</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <div class="stat-number">{{ total_lessons }}</div>
+                        <div class="stat-label">Tổng bài học</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <div class="stat-number">
+                            {{ "%.1f"|format(total_score / score_count if score_count > 0 else 0) }}
+                        </div>
+                        <div class="stat-label">Điểm trung bình</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress by Course -->
+        <h4 class="mb-4"><i class="fas fa-book me-2"></i>Tiến độ theo khóa học</h4>
+        
+        {% for course_id, data in courses_progress.items() %}
+        <div class="course-progress-card">
+            <div class="course-title-section">
+                <div>
+                    <h5 class="mb-1">{{ data.course.title }}</h5>
+                    <small class="text-muted">
+                        <i class="fas fa-user-tie me-1"></i>{{ data.course.teacher_name }}
+                    </small>
+                </div>
+                <div>
+                    <span class="badge bg-primary">{{ data.course.subject|upper }}</span>
+                </div>
+            </div>
+
+            <!-- Course Progress Bar -->
+            {% set course_total = data.lessons|length %}
+            {% set course_completed = data.lessons|selectattr('progress.completed')|list|length %}
+            {% set course_progress = (course_completed / course_total * 100) if course_total > 0 else 0 %}
+            
+            <div class="mb-3">
+                <div class="d-flex justify-content-between mb-1">
+                    <small class="text-muted">Tiến độ tổng thể</small>
+                    <small class="text-muted">{{ course_completed }}/{{ course_total }} bài</small>
+                </div>
+                <div class="progress" style="height: 20px;">
+                    <div class="progress-bar bg-success" style="width: {{ course_progress }}%">
+                        {{ "%.1f"|format(course_progress) }}%
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lessons Progress -->
+            <h6 class="mt-4 mb-3"><i class="fas fa-list me-2"></i>Chi tiết bài học</h6>
+            {% for item in data.lessons %}
+            <div class="lesson-progress-item {% if item.progress.completed %}completed{% endif %}">
+                <div class="d-flex align-items-center flex-grow-1">
+                    <div style="width: 40px;">
+                        {% if item.progress.completed %}
+                            <i class="fas fa-check-circle text-success fa-2x"></i>
+                        {% else %}
+                            <i class="fas fa-circle text-secondary"></i>
+                        {% endif %}
+                    </div>
+                    <div class="ms-3">
+                        <div class="fw-bold">{{ item.lesson.title }}</div>
+                        {% if item.progress.last_attempt %}
+                        <small class="text-muted">
+                            <i class="fas fa-clock me-1"></i>{{ item.progress.last_attempt }}
+                        </small>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div>
+                    {% if item.progress.completed %}
+                        <span class="score-badge bg-success text-white">
+                            <i class="fas fa-star me-1"></i>{{ item.progress.score }}%
+                        </span>
+                        <small class="text-muted ms-2">
+                            ({{ item.progress.attempts }} lần làm)
+                        </small>
+                    {% else %}
+                        <a href="{{ url_for('student_lesson', lesson_id=item.lesson.id) }}" 
+                           class="btn btn-sm btn-primary">
+                            <i class="fas fa-play me-1"></i>Bắt đầu
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+
+            <!-- View Course Button -->
+            <div class="text-center mt-3">
+                <a href="{{ url_for('student_course_detail', course_id=data.course.id) }}" 
+                   class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-right me-2"></i>Xem chi tiết khóa học
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% else %}
+        <!-- Empty State -->
+        <div class="empty-state">
+            <i class="fas fa-chart-line"></i>
+            <h4>Chưa có tiến độ học tập</h4>
+            <p class="text-muted mb-4">Bắt đầu học một khóa học để theo dõi tiến độ của bạn!</p>
+            <a href="{{ url_for('student_dashboard') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-book me-2"></i>Khám phá khóa học
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

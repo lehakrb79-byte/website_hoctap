@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo Bài Học Mới</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .form-content {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group label .required {
+            color: #e74c3c;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .video-type-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .video-option {
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .video-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .video-option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .video-option input[type="radio"]:checked + label {
+            color: #667eea;
+        }
+
+        .video-option.active {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .video-option .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .video-option label {
+            font-weight: 600;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #333;
+            margin: 30px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .quiz-container {
+            margin-top: 20px;
+        }
+
+        .question-card {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .question-card .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .delete-question {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .delete-question:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .option-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-label {
+            background: #667eea;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            min-width: 35px;
+            text-align: center;
+        }
+
+        .add-question-btn {
+            width: 100%;
+            padding: 15px;
+            background: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .add-question-btn:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .helper-text {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .answer-selector {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .answer-selector label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2ecc71;
+            font-weight: 600;
+        }
+
+        .video-link-input {
+            display: none;
+        }
+
+        .video-link-input.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .form-content {
+                padding: 20px;
+            }
+
+            .video-type-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Tạo Bài Học Mới</h1>
+            <p>Tạo nội dung học tập chất lượng cho học sinh của bạn</p>
+        </div>
+
+        <form method="POST" class="form-content">
+            <!-- Tên bài học -->
+            <div class="form-group">
+                <label>Tên bài học <span class="required">*</span></label>
+                <input type="text" name="title" class="form-control" 
+                       placeholder="VD: Định lý Pythagoras" required>
+                <p class="helper-text">Tên bài học nên rõ ràng và dễ hiểu</p>
+            </div>
+
+            <!-- Chọn loại video -->
+            <div class="form-group">
+                <label>Chọn nguồn tài liệu <span class="required">*</span></label>
+                <div class="video-type-selector">
+                    <div class="video-option active" onclick="selectVideoType('youtube')">
+                        <input type="radio" name="video_type" value="youtube" id="youtube" checked>
+                        <div class="icon">🎥</div>
+                        <label for="youtube">YouTube</label>
+                    </div>
+                    <div class="video-option" onclick="selectVideoType('drive')">
+                        <input type="radio" name="video_type" value="drive" id="drive">
+                        <div class="icon">📄</div>
+                        <label for="drive">Google Drive</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Link YouTube -->
+            <div class="form-group video-link-input active" id="youtube-input">
+                <label>Link video YouTube</label>
+                <input type="text" name="video_link" class="form-control" 
+                       placeholder="https://www.youtube.com/watch?v=... hoặc https://youtu.be/...">
+                <p class="helper-text">Dán link video YouTube để học sinh xem bài giảng</p>
+            </div>
+
+            <!-- Link Google Drive -->
+            <div class="form-group video-link-input" id="drive-input">
+                <label>Link tài liệu Google Drive</label>
+                <input type="text" name="document_link" class="form-control" 
+                       placeholder="https://drive.google.com/file/d/...">
+                <p class="helper-text">Dán link file PDF, Word hoặc PowerPoint từ Google Drive</p>
+            </div>
+
+            <!-- Nội dung bài học -->
+            <div class="form-group">
+                <label>Nội dung bài học</label>
+                <textarea name="content" class="form-control" 
+                          placeholder="Nhập nội dung bài học, các kiến thức cần nắm, ghi chú..."></textarea>
+                <p class="helper-text">Mô tả chi tiết về bài học này</p>
+            </div>
+
+            <!-- Câu hỏi trắc nghiệm -->
+            <div class="section-title">
+                ✏️ Câu Hỏi Trắc Nghiệm
+            </div>
+
+            <div class="quiz-container" id="quiz-container">
+                <!-- Câu hỏi đầu tiên -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Câu hỏi 1</span>
+                        <button type="button" class="delete-question" onclick="deleteQuestion(this)" style="display: none;">
+                            🗑️ Xóa
+                        </button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Câu hỏi</label>
+                        <input type="text" name="question_0" class="form-control" 
+                               placeholder="Nhập nội dung câu hỏi...">
+                    </div>
+
+                    <div class="options-grid">
+                        <div class="option-input">
+                            <span class="option-label">A</span>
+                            <input type="text" name="option_A_0" class="form-control" 
+                                   placeholder="Đáp án A">
+                        </div>
+                        <div class="option-input">
+                            <span class="option-label">B</span>
+                            <input type="text" name="option_B_0" class="form-control" 
+                                   placeholder="Đáp án B">
+                        </div>
+                        <div class="option-input">
+                            <span class="option-label">C</span>
+                            <input type="text" name="option_C_0" class="form-control" 
+                                   placeholder="Đáp án C">
+                        </div>
+                        <div class="option-input">
+                            <span class="option-label">D</span>
+                            <input type="text" name="option_D_0" class="form-control" 
+                                   placeholder="Đáp án D">
+                        </div>
+                    </div>
+
+                    <div class="answer-selector">
+                        <label>✓ Đáp án đúng</label>
+                        <select name="answer_0" class="form-control">
+                            <option value="">-- Chọn đáp án đúng --</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="add-question-btn" onclick="addQuestion()">
+                ➕ Thêm Câu Hỏi
+            </button>
+
+            <!-- Nút hành động -->
+            <div class="btn-group">
+                <button type="button" class="btn btn-secondary" onclick="history.back()">
+                    ← Hủy
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    ✓ Tạo Bài Học
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let questionCount = 1;
+
+        function selectVideoType(type) {
+            // Xóa active class
+            document.querySelectorAll('.video-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+
+            // Thêm active class
+            event.currentTarget.classList.add('active');
+
+            // Hiển thị input tương ứng
+            document.querySelectorAll('.video-link-input').forEach(input => {
+                input.classList.remove('active');
+            });
+
+            if (type === 'youtube') {
+                document.getElementById('youtube-input').classList.add('active');
+                document.getElementById('youtube').checked = true;
+            } else {
+                document.getElementById('drive-input').classList.add('active');
+                document.getElementById('drive').checked = true;
+            }
+        }
+
+        function addQuestion() {
+            const container = document.getElementById('quiz-container');
+            const questionNumber = questionCount + 1;
+
+            const questionHTML = `
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Câu hỏi ${questionNumber}</span>
+                        <button type="button" class="delete-question" onclick="deleteQuestion(this)">
+                            🗑️ Xóa
+                        </button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Câu hỏi</label>
+                        <input type="text" name="question_${questionCount}" class="form-control" 
+                               placeholder="Nhập nội dung câu hỏi...">
+                    </div>
+
+                    <div class="options-grid">
+                        <div class="option-input">
+                            <span class="option-label">A</span>
+                            <input type="text" name="option_A_${questionCount}" class="form-control" 
+                                   placeholder="Đáp án A">
+                        </div>
+                        <div class="option-input">
+                            <span class="option-label">B</span>
+                            <input type="text" name="option_B_${questionCount}" class="form-control" 
+                                   placeholder="Đáp án B">
+                        </div>
+                        <div class="option-input">
+                            <span class="option-label">C</span>
+                            <input type="text" name="option_C_${questionCount}" class="form-control" 
+                                   placeholder="Đáp án C">
+                        </div>
+                        <div class="option-input">
+                            <span class="option-label">D</span>
+                            <input type="text" name="option_D_${questionCount}" class="form-control" 
+                                   placeholder="Đáp án D">
+                        </div>
+                    </div>
+
+                    <div class="answer-selector">
+                        <label>✓ Đáp án đúng</label>
+                        <select name="answer_${questionCount}" class="form-control">
+                            <option value="">-- Chọn đáp án đúng --</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+
+            container.insertAdjacentHTML('beforeend', questionHTML);
+            questionCount++;
+
+            // Hiển thị nút xóa cho câu hỏi đầu tiên nếu có nhiều hơn 1 câu
+            if (questionCount > 1) {
+                document.querySelectorAll('.delete-question').forEach(btn => {
+                    btn.style.display = 'inline-block';
+                });
+            }
+        }
+
+        function deleteQuestion(button) {
+            const questionCard = button.closest('.question-card');
+            questionCard.remove();
+            questionCount--;
+
+            // Cập nhật lại số thứ tự câu hỏi
+            const questions = document.querySelectorAll('.question-card');
+            questions.forEach((card, index) => {
+                card.querySelector('.question-number').textContent = `Câu hỏi ${index + 1}`;
+            });
+
+            // Ẩn nút xóa nếu chỉ còn 1 câu
+            if (questionCount === 1) {
+                document.querySelectorAll('.delete-question').forEach(btn => {
+                    btn.style.display = 'none';
+                });
+            }
+        }
+
+        // Validate form trước khi submit
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const title = document.querySelector('input[name="title"]').value.trim();
+            if (!title) {
+                e.preventDefault();
+                alert('Vui lòng nhập tên bài học!');
+                return false;
+            }
+
+            // Kiểm tra ít nhất 1 câu hỏi có đầy đủ thông tin
+            const firstQuestion = document.querySelector('input[name="question_0"]').value.trim();
+            if (firstQuestion) {
+                const optionA = document.querySelector('input[name="option_A_0"]').value.trim();
+                const optionB = document.querySelector('input[name="option_B_0"]').value.trim();
+                const optionC = document.querySelector('input[name="option_C_0"]').value.trim();
+                const optionD = document.querySelector('input[name="option_D_0"]').value.trim();
+                const answer = document.querySelector('select[name="answer_0"]').value;
+
+                if (!optionA || !optionB || !optionC || !optionD || !answer) {
+                    e.preventDefault();
+                    alert('Vui lòng nhập đầy đủ 4 đáp án và chọn đáp án đúng cho câu hỏi đầu tiên!');
+                    return false;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

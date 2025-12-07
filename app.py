@@ -6,8 +6,11 @@ import google.generativeai as genai
 from datetime import datetime
 import secrets
 import PyPDF2
+from functools import wraps
+import hashlib
 
 API_KEY = "AIzaSyDsN-HoFzthjs4tU2qjLLf5mjLB6gpDSA8"
+### AIzaSyCrRZJ4eU0deN29HhqVaxoLiO8oLszC1-o
 genai.configure(api_key=API_KEY)
 model = genai.GenerativeModel("gemini-2.0-flash")
 
@@ -1072,7 +1075,871 @@ def experiment_detail(exp_id):
         return redirect(url_for('stem'))
     
     return render_template('experiment.html', experiment=experiment, exp_id=exp_id)
+#####################################
+# ===============================================
+# PHẦN 1: IMPORT VÀ HELPER FUNCTIONS BỔ SUNG
+# ===============================================
 
+from functools import wraps
+import hashlib
+
+# Decorator kiểm tra đăng nhập
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash("Vui lòng đăng nhập!", "warning")
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+# Decorator kiểm tra quyền giáo viên
+def teacher_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash("Vui lòng đăng nhập!", "warning")
+            return redirect(url_for('login'))
+        if session.get('role') != 'teacher':
+            flash("Bạn không có quyền truy cập!", "error")
+            return redirect(url_for('index'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+# Hàm hash mật khẩu đơn giản
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
+
+# Khởi tạo file users.json nếu chưa có
+def init_users():
+    if not os.path.exists("users.json"):
+        users_data = {
+            "teachers": [
+                {
+                    "id": "gv001",
+                    "username": "giaovien1",
+                    "password": hash_password("123456"),
+                    "fullname": "Cô Nguyễn Thị A",
+                    "email": "coA@school.edu.vn",
+                    "subject": "toan"
+                },
+                {
+                    "id": "gv002",
+                    "username": "giaovien2",
+                    "password": hash_password("123456"),
+                    "fullname": "Thầy Trần Văn B",
+                    "email": "thayB@school.edu.vn",
+                    "subject": "ly"
+                }
+            ],
+            "students": []
+        }
+        save_json("users.json", users_data)
+
+# Khởi tạo file courses.json
+def init_courses():
+    if not os.path.exists("courses.json"):
+        courses_data = {
+            "courses": [],
+            "lessons": [],
+            "student_progress": []
+        }
+        save_json("courses.json", courses_data)
+
+# ===============================================
+# PHẦN 2: AUTHENTICATION ROUTES
+# ===============================================
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '').strip()
+        
+        if not username or not password:
+            flash("Vui lòng nhập đầy đủ thông tin!", "warning")
+            return redirect(url_for('login'))
+        
+        users_data = load_json("users.json")
+        
+        # Kiểm tra giáo viên
+        for teacher in users_data.get('teachers', []):
+            # Kiểm tra cả 2 trường hợp: password thô HOẶC password đã hash
+            teacher_password = teacher['password']
+            
+            # Case 1: Password thô (như "testgv1", "coleha@")
+            # Case 2: Password đã hash (dài 64 ký tự)
+            if teacher['username'] == username:
+                # Nếu password trong DB là thô (không phải hash 64 ký tự)
+                if len(teacher_password) < 64 and teacher_password == password:
+                    # Đăng nhập với password thô
+                    session['user_id'] = teacher['id']
+                    session['username'] = teacher['username']
+                    session['fullname'] = teacher['fullname']
+                    session['role'] = 'teacher'
+                    session['subject'] = teacher.get('subject', '')
+                    flash(f"Chào mừng {teacher['fullname']}!", "success")
+                    return redirect(url_for('teacher_dashboard'))
+                # Nếu password trong DB là hash (64 ký tự)
+                elif len(teacher_password) == 64 and teacher_password == hash_password(password):
+                    # Đăng nhập với password đã hash
+                    session['user_id'] = teacher['id']
+                    session['username'] = teacher['username']
+                    session['fullname'] = teacher['fullname']
+                    session['role'] = 'teacher'
+                    session['subject'] = teacher.get('subject', '')
+                    flash(f"Chào mừng {teacher['fullname']}!", "success")
+                    return redirect(url_for('teacher_dashboard'))
+        
+        # Kiểm tra học sinh - LUÔN DÙNG HASH
+        hashed_pw = hash_password(password)
+        for student in users_data.get('students', []):
+            if student['username'] == username:
+                # Kiểm tra cả password thô và hash
+                if student['password'] == hashed_pw or student['password'] == password:
+                    session['user_id'] = student['id']
+                    session['username'] = student['username']
+                    session['fullname'] = student['fullname']
+                    session['role'] = 'student'
+                    flash(f"Chào mừng {student['fullname']}!", "success")
+                    return redirect(url_for('student_dashboard'))
+        
+        flash("Tên đăng nhập hoặc mật khẩu không đúng!", "error")
+        return redirect(url_for('login'))
+    
+    return render_template('login.html')
+##################
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    """Đăng ký tài khoản học sinh"""
+    if request.method == 'POST':
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '').strip()
+        confirm_password = request.form.get('confirm_password', '').strip()
+        fullname = request.form.get('fullname', '').strip()
+        email = request.form.get('email', '').strip()
+        
+        # Validation
+        if not all([username, password, confirm_password, fullname]):
+            flash("Vui lòng nhập đầy đủ thông tin!", "warning")
+            return redirect(url_for('register'))
+        
+        if password != confirm_password:
+            flash("Mật khẩu xác nhận không khớp!", "error")
+            return redirect(url_for('register'))
+        
+        if len(password) < 6:
+            flash("Mật khẩu phải có ít nhất 6 ký tự!", "warning")
+            return redirect(url_for('register'))
+        
+        users_data = load_json("users.json")
+        
+        # Kiểm tra username đã tồn tại
+        all_users = users_data.get('teachers', []) + users_data.get('students', [])
+        if any(u['username'] == username for u in all_users):
+            flash("Tên đăng nhập đã tồn tại!", "error")
+            return redirect(url_for('register'))
+        
+        # Tạo tài khoản mới
+        new_student = {
+            "id": f"hs{len(users_data.get('students', [])) + 1:04d}",
+            "username": username,
+            "password": hash_password(password),
+            "fullname": fullname,
+            "email": email,
+            "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        
+        if 'students' not in users_data:
+            users_data['students'] = []
+        users_data['students'].append(new_student)
+        
+        if save_json("users.json", users_data):
+            flash("Đăng ký thành công! Vui lòng đăng nhập.", "success")
+            return redirect(url_for('login'))
+        else:
+            flash("Có lỗi xảy ra, vui lòng thử lại!", "error")
+    
+    return render_template('register.html')
+
+@app.route('/logout')
+def logout():
+    """Đăng xuất"""
+    session.clear()
+    flash("Đã đăng xuất thành công!", "success")
+    return redirect(url_for('index'))
+
+# ===============================================
+# PHẦN 3: STUDENT ROUTES
+# ===============================================
+
+@app.route('/student/dashboard')
+@login_required
+def student_dashboard():
+    """Trang chủ học sinh - Hiển thị các khóa học"""
+    if session.get('role') != 'student':
+        return redirect(url_for('teacher_dashboard'))
+    
+    courses_data = load_json("courses.json")
+    all_courses = courses_data.get('courses', [])
+    
+    # Lấy tiến độ học của học sinh
+    student_id = session.get('user_id')
+    progress_data = courses_data.get('student_progress', [])
+    student_progress = [p for p in progress_data if p['student_id'] == student_id]
+    
+    # Tính toán tiến độ cho mỗi khóa học
+    courses_with_progress = []
+    for course in all_courses:
+        course_lessons = [l for l in courses_data.get('lessons', []) 
+                         if l['course_id'] == course['id']]
+        total_lessons = len(course_lessons)
+        
+        completed_lessons = len([p for p in student_progress 
+                                if p['course_id'] == course['id'] and p['completed']])
+        
+        progress_percent = (completed_lessons / total_lessons * 100) if total_lessons > 0 else 0
+        
+        courses_with_progress.append({
+            **course,
+            'total_lessons': total_lessons,
+            'completed_lessons': completed_lessons,
+            'progress_percent': round(progress_percent, 1)
+        })
+    
+    return render_template('student_dashboard.html', 
+                         courses=courses_with_progress,
+                         fullname=session.get('fullname'))
+
+@app.route('/student/course/<course_id>')
+@login_required
+def student_course_detail(course_id):
+    """Chi tiết khóa học - Danh sách bài học"""
+    if session.get('role') != 'student':
+        flash("Bạn không có quyền truy cập!", "error")
+        return redirect(url_for('index'))
+    
+    courses_data = load_json("courses.json")
+    
+    # Lấy thông tin khóa học
+    course = next((c for c in courses_data.get('courses', []) 
+                  if c['id'] == course_id), None)
+    if not course:
+        flash("Không tìm thấy khóa học!", "error")
+        return redirect(url_for('student_dashboard'))
+    
+    # Lấy danh sách bài học
+    lessons = [l for l in courses_data.get('lessons', []) 
+              if l['course_id'] == course_id]
+    lessons.sort(key=lambda x: x['order'])
+    
+    # Lấy tiến độ học
+    student_id = session.get('user_id')
+    progress_data = courses_data.get('student_progress', [])
+    
+    # Thêm thông tin completed cho mỗi bài học
+    for lesson in lessons:
+        progress = next((p for p in progress_data 
+                        if p['student_id'] == student_id 
+                        and p['lesson_id'] == lesson['id']), None)
+        lesson['completed'] = progress['completed'] if progress else False
+        lesson['score'] = progress.get('score', 0) if progress else 0
+    
+    return render_template('student_course_detail.html', 
+                         course=course, 
+                         lessons=lessons)
+
+@app.route('/student/lesson/<lesson_id>')
+@login_required
+def student_lesson(lesson_id):
+    """Xem bài học và làm bài tập"""
+    if session.get('role') != 'student':
+        flash("Bạn không có quyền truy cập!", "error")
+        return redirect(url_for('index'))
+    
+    courses_data = load_json("courses.json")
+    
+    # Lấy thông tin bài học
+    lesson = next((l for l in courses_data.get('lessons', []) 
+                  if l['id'] == lesson_id), None)
+    if not lesson:
+        flash("Không tìm thấy bài học!", "error")
+        return redirect(url_for('student_dashboard'))
+    
+    # Lấy thông tin khóa học
+    course = next((c for c in courses_data.get('courses', []) 
+                  if c['id'] == lesson['course_id']), None)
+    
+    # Lấy tiến độ
+    student_id = session.get('user_id')
+    progress_data = courses_data.get('student_progress', [])
+    progress = next((p for p in progress_data 
+                    if p['student_id'] == student_id 
+                    and p['lesson_id'] == lesson_id), None)
+    
+    return render_template('student_lesson.html', 
+                         lesson=lesson, 
+                         course=course,
+                         progress=progress)
+
+@app.route('/student/lesson/<lesson_id>/quiz', methods=['GET', 'POST'])
+@login_required
+def student_quiz(lesson_id):
+    """Làm bài tập trắc nghiệm"""
+    if session.get('role') != 'student':
+        flash("Bạn không có quyền truy cập!", "error")
+        return redirect(url_for('index'))
+    
+    courses_data = load_json("courses.json")
+    lesson = next((l for l in courses_data.get('lessons', []) 
+                  if l['id'] == lesson_id), None)
+    
+    if not lesson:
+        flash("Không tìm thấy bài học!", "error")
+        return redirect(url_for('student_dashboard'))
+    
+    if request.method == 'POST':
+        # Chấm điểm
+        questions = lesson.get('quiz', [])
+        correct = 0
+        total = len(questions)
+        
+        for i, q in enumerate(questions):
+            user_answer = request.form.get(f"q{i}", "").strip().upper()
+            if user_answer == q['answer']:
+                correct += 1
+        
+        score = (correct / total * 100) if total > 0 else 0
+        
+        # Lưu tiến độ
+        student_id = session.get('user_id')
+        progress_data = courses_data.get('student_progress', [])
+        
+        # Tìm hoặc tạo mới progress
+        progress = next((p for p in progress_data 
+                        if p['student_id'] == student_id 
+                        and p['lesson_id'] == lesson_id), None)
+        
+        if progress:
+            progress['score'] = score
+            progress['completed'] = score >= 70  # Đạt nếu >= 70%
+            progress['attempts'] = progress.get('attempts', 0) + 1
+            progress['last_attempt'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            new_progress = {
+                "student_id": student_id,
+                "course_id": lesson['course_id'],
+                "lesson_id": lesson_id,
+                "score": score,
+                "completed": score >= 70,
+                "attempts": 1,
+                "last_attempt": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            }
+            progress_data.append(new_progress)
+        
+        courses_data['student_progress'] = progress_data
+        save_json("courses.json", courses_data)
+        
+        flash(f"Bạn đạt {correct}/{total} câu đúng ({score:.1f}%)", "success")
+        return redirect(url_for('student_lesson', lesson_id=lesson_id))
+    
+    # GET - Hiển thị bài tập
+    questions = lesson.get('quiz', [])
+    return render_template('student_quiz.html', lesson=lesson, questions=questions)
+
+@app.route('/student/progress')
+@login_required
+def student_progress():
+    """Xem tiến độ học tập của bản thân"""
+    if session.get('role') != 'student':
+        flash("Bạn không có quyền truy cập!", "error")
+        return redirect(url_for('index'))
+    
+    courses_data = load_json("courses.json")
+    student_id = session.get('user_id')
+    
+    # Lấy tất cả tiến độ của học sinh
+    progress_data = [p for p in courses_data.get('student_progress', []) 
+                    if p['student_id'] == student_id]
+    
+    # Nhóm theo khóa học
+    courses_progress = {}
+    for progress in progress_data:
+        course_id = progress['course_id']
+        if course_id not in courses_progress:
+            course = next((c for c in courses_data.get('courses', []) 
+                          if c['id'] == course_id), None)
+            if course:
+                courses_progress[course_id] = {
+                    'course': course,
+                    'lessons': []
+                }
+        
+        # Lấy thông tin bài học
+        lesson = next((l for l in courses_data.get('lessons', []) 
+                      if l['id'] == progress['lesson_id']), None)
+        if lesson:
+            courses_progress[course_id]['lessons'].append({
+                'lesson': lesson,
+                'progress': progress
+            })
+    
+    return render_template('student_progress.html', 
+                         courses_progress=courses_progress)
+
+# ===============================================
+# PHẦN 4: TEACHER ROUTES
+# ===============================================
+
+@app.route('/teacher/dashboard')
+@teacher_required
+def teacher_dashboard():
+    """Trang chủ giáo viên"""
+    courses_data = load_json("courses.json")
+    teacher_id = session.get('user_id')
+    
+    # Lấy các khóa học của giáo viên
+    my_courses = [c for c in courses_data.get('courses', []) 
+                  if c['teacher_id'] == teacher_id]
+    
+    # Thống kê
+    total_courses = len(my_courses)
+    total_lessons = sum(len([l for l in courses_data.get('lessons', []) 
+                            if l['course_id'] == c['id']]) 
+                       for c in my_courses)
+    
+    # Đếm số học sinh unique
+    all_progress = courses_data.get('student_progress', [])
+    course_ids = [c['id'] for c in my_courses]
+    students_set = set(p['student_id'] for p in all_progress 
+                      if p['course_id'] in course_ids)
+    total_students = len(students_set)
+    
+    return render_template('teacher_dashboard.html',
+                         courses=my_courses,
+                         total_courses=total_courses,
+                         total_lessons=total_lessons,
+                         total_students=total_students)
+
+@app.route('/teacher/course/create', methods=['GET', 'POST'])
+@teacher_required
+def teacher_create_course():
+    """Tạo khóa học mới"""
+    if request.method == 'POST':
+        title = request.form.get('title', '').strip()
+        subject = request.form.get('subject', '').strip()
+        description = request.form.get('description', '').strip()
+        thumbnail = request.form.get('thumbnail', '').strip()
+        
+        if not title or not subject:
+            flash("Vui lòng nhập đầy đủ thông tin!", "warning")
+            return redirect(url_for('teacher_create_course'))
+        
+        courses_data = load_json("courses.json")
+        
+        new_course = {
+            "id": f"course_{len(courses_data.get('courses', [])) + 1}",
+            "teacher_id": session.get('user_id'),
+            "teacher_name": session.get('fullname'),
+            "title": title,
+            "subject": subject,
+            "description": description,
+            "thumbnail": thumbnail,
+            "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        
+        if 'courses' not in courses_data:
+            courses_data['courses'] = []
+        courses_data['courses'].append(new_course)
+        
+        if save_json("courses.json", courses_data):
+            flash("Tạo khóa học thành công!", "success")
+            return redirect(url_for('teacher_course_detail', course_id=new_course['id']))
+        else:
+            flash("Có lỗi xảy ra!", "error")
+    
+    return render_template('teacher_create_course.html')
+
+@app.route('/teacher/course/<course_id>')
+@teacher_required
+def teacher_course_detail(course_id):
+    """Chi tiết khóa học - Quản lý bài học"""
+    courses_data = load_json("courses.json")
+    
+    course = next((c for c in courses_data.get('courses', []) 
+                  if c['id'] == course_id), None)
+    
+    if not course:
+        flash("Không tìm thấy khóa học!", "error")
+        return redirect(url_for('teacher_dashboard'))
+    
+    # Kiểm tra quyền sở hữu
+    if course['teacher_id'] != session.get('user_id'):
+        flash("Bạn không có quyền truy cập khóa học này!", "error")
+        return redirect(url_for('teacher_dashboard'))
+    
+    # Lấy danh sách bài học
+    lessons = [l for l in courses_data.get('lessons', []) 
+              if l['course_id'] == course_id]
+    lessons.sort(key=lambda x: x['order'])
+    
+    return render_template('teacher_course_detail.html', 
+                         course=course, 
+                         lessons=lessons)
+
+####################
+@app.route('/teacher/course/<course_id>/lesson/create', methods=['GET', 'POST'])
+@teacher_required
+def teacher_create_lesson(course_id):
+    """Tạo bài học mới"""
+    courses_data = load_json("courses.json")
+    
+    course = next((c for c in courses_data.get('courses', []) 
+                  if c['id'] == course_id), None)
+    
+    if not course or course['teacher_id'] != session.get('user_id'):
+        flash("Không có quyền!", "error")
+        return redirect(url_for('teacher_dashboard'))
+    
+    if request.method == 'POST':
+        title = request.form.get('title', '').strip()
+        video_type = request.form.get('video_type', 'youtube')
+        video_link = request.form.get('video_link', '').strip()
+        document_link = request.form.get('document_link', '').strip()
+        content = request.form.get('content', '').strip()
+        
+        if not title:
+            flash("Vui lòng nhập tên bài học!", "warning")
+            return redirect(url_for('teacher_create_lesson', course_id=course_id))
+        
+        # Xử lý link YouTube
+        if video_type == 'youtube' and video_link:
+            if 'youtu.be/' in video_link:
+                video_id = video_link.split('youtu.be/')[-1].split('?')[0]
+            elif 'watch?v=' in video_link:
+                video_id = video_link.split('watch?v=')[-1].split('&')[0]
+            else:
+                video_id = video_link
+            video_link = f"https://www.youtube.com/embed/{video_id}"
+        
+        # Xử lý link Google Drive - CHỈ KHI video_type == 'drive'
+        if video_type == 'drive' and document_link:
+            if '/file/d/' in document_link:
+                file_id = document_link.split('/file/d/')[-1].split('/')[0]
+                document_link = f"https://drive.google.com/file/d/{file_id}/preview"
+        
+        # Lấy câu hỏi trắc nghiệm
+        quiz = []
+        i = 0
+        while True:
+            question = request.form.get(f'question_{i}', '').strip()
+            if not question:
+                break
+            
+            # KIỂM TRA ĐẦY ĐỦ 4 ĐÁP ÁN
+            option_a = request.form.get(f'option_A_{i}', '').strip()
+            option_b = request.form.get(f'option_B_{i}', '').strip()
+            option_c = request.form.get(f'option_C_{i}', '').strip()
+            option_d = request.form.get(f'option_D_{i}', '').strip()
+            answer = request.form.get(f'answer_{i}', '').strip().upper()
+            
+            # VALIDATION: Phải có đủ 4 đáp án và chọn đáp án đúng
+            if not all([option_a, option_b, option_c, option_d, answer]):
+                flash(f"Câu hỏi {i+1}: Vui lòng nhập đủ 4 đáp án và chọn đáp án đúng!", "warning")
+                return redirect(url_for('teacher_create_lesson', course_id=course_id))
+            
+            if answer not in ['A', 'B', 'C', 'D']:
+                flash(f"Câu hỏi {i+1}: Đáp án đúng phải là A, B, C hoặc D!", "warning")
+                return redirect(url_for('teacher_create_lesson', course_id=course_id))
+            
+            quiz_item = {
+                'question': question,
+                'A': option_a,
+                'B': option_b,
+                'C': option_c,
+                'D': option_d,
+                'answer': answer
+            }
+            quiz.append(quiz_item)
+            i += 1
+        
+        # KIỂM TRA: Phải có ít nhất 1 nội dung
+        if not video_link and not document_link and not content and not quiz:
+            flash("Vui lòng thêm ít nhất một nội dung: Video, Tài liệu, Nội dung hoặc Câu hỏi!", "warning")
+            return redirect(url_for('teacher_create_lesson', course_id=course_id))
+        
+        # Tạo bài học mới
+        lessons = [l for l in courses_data.get('lessons', []) 
+                  if l['course_id'] == course_id]
+        
+        new_lesson = {
+            "id": f"lesson_{len(courses_data.get('lessons', [])) + 1}",
+            "course_id": course_id,
+            "title": title,
+            "order": len(lessons) + 1,
+            "video_type": video_type,
+            "video_link": video_link if video_type == 'youtube' else "",
+            "document_link": document_link if video_type == 'drive' else "",
+            "content": content,
+            "quiz": quiz,
+            "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        
+        if 'lessons' not in courses_data:
+            courses_data['lessons'] = []
+        courses_data['lessons'].append(new_lesson)
+        
+        if save_json("courses.json", courses_data):
+            flash("Tạo bài học thành công!", "success")
+            return redirect(url_for('teacher_course_detail', course_id=course_id))
+        else:
+            flash("Có lỗi xảy ra!", "error")
+    
+    return render_template('teacher_create_lesson.html', course=course)
+#################
+
+@app.route('/teacher/lesson/<lesson_id>/edit', methods=['GET', 'POST'])
+@teacher_required
+def teacher_edit_lesson(lesson_id):
+    """Chỉnh sửa bài học"""
+    courses_data = load_json("courses.json")
+    
+    lesson = next((l for l in courses_data.get('lessons', []) 
+                  if l['id'] == lesson_id), None)
+    
+    if not lesson:
+        flash("Không tìm thấy bài học!", "error")
+        return redirect(url_for('teacher_dashboard'))
+    
+    course = next((c for c in courses_data.get('courses', []) 
+                  if c['id'] == lesson['course_id']), None)
+    
+    if not course or course['teacher_id'] != session.get('user_id'):
+        flash("Không có quyền!", "error")
+        return redirect(url_for('teacher_dashboard'))
+    
+    if request.method == 'POST':
+      
+        lesson['title'] = request.form.get('title', '').strip()
+        lesson['video_type'] = request.form.get('video_type', 'youtube')
+        lesson['video_link'] = request.form.get('video_link', '').strip()
+        lesson['document_link'] = request.form.get('document_link', '').strip()
+        lesson['content'] = request.form.get('content', '').strip()
+        
+        # Cập nhật quiz...
+        
+        if save_json("courses.json", courses_data):
+            flash("Cập nhật bài học thành công!", "success")
+            return redirect(url_for('teacher_course_detail', course_id=lesson['course_id']))
+    
+    return render_template('teacher_edit_lesson.html', lesson=lesson, course=course)
+
+@app.route('/teacher/lesson/<lesson_id>/delete', methods=['POST'])
+@teacher_required
+def teacher_delete_lesson(lesson_id):
+    """Xóa bài học"""
+    courses_data = load_json("courses.json")
+    
+    lesson = next((l for l in courses_data.get('lessons', []) 
+                  if l['id'] == lesson_id), None)
+    
+    if lesson:
+        course = next((c for c in courses_data.get('courses', []) 
+                      if c['id'] == lesson['course_id']), None)
+        
+        if course and course['teacher_id'] == session.get('user_id'):
+            courses_data['lessons'] = [l for l in courses_data.get('lessons', []) 
+                                      if l['id'] != lesson_id]
+            save_json("courses.json", courses_data)
+            flash("Đã xóa bài học!", "success")
+            return redirect(url_for('teacher_course_detail', course_id=lesson['course_id']))
+    
+    flash("Không thể xóa bài học!", "error")
+    return redirect(url_for('teacher_dashboard'))
+
+@app.route('/teacher/course/<course_id>/students')
+@teacher_required
+def teacher_view_students(course_id):
+    """Xem danh sách học sinh và tiến độ học"""
+    courses_data = load_json("courses.json")
+    users_data = load_json("users.json")
+    
+    course = next((c for c in courses_data.get('courses', []) 
+                  if c['id'] == course_id), None)
+    
+    if not course or course['teacher_id'] != session.get('user_id'):
+        flash("Không có quyền!", "error")
+        return redirect(url_for('teacher_dashboard'))
+    
+    # Lấy tất cả bài học của khóa học
+    lessons = [l for l in courses_data.get('lessons', []) 
+              if l['course_id'] == course_id]
+    total_lessons = len(lessons)
+    
+    # Lấy tiến độ học của các học sinh
+    all_progress = courses_data.get('student_progress', [])
+    course_progress = [p for p in all_progress if p['course_id'] == course_id]
+    
+    # Nhóm theo học sinh
+    students_dict = {}
+    for progress in course_progress:
+        student_id = progress['student_id']
+        if student_id not in students_dict:
+            student = next((s for s in users_data.get('students', []) 
+                          if s['id'] == student_id), None)
+            if student:
+                students_dict[student_id] = {
+                    'info': student,
+                    'completed': 0,
+                    'total_score': 0,
+                    'lessons_detail': []
+                }
+        
+        if progress['completed']:
+            students_dict[student_id]['completed'] += 1
+        students_dict[student_id]['total_score'] += progress.get('score', 0)
+        
+        lesson = next((l for l in lessons if l['id'] == progress['lesson_id']), None)
+        if lesson:
+            students_dict[student_id]['lessons_detail'].append({
+                'lesson': lesson,
+                'progress': progress
+            })
+    
+    # Tính điểm trung bình
+    students_list = []
+    for student_id, data in students_dict.items():
+        avg_score = (data['total_score'] / total_lessons) if total_lessons > 0 else 0
+        progress_percent = (data['completed'] / total_lessons * 100) if total_lessons > 0 else 0
+        
+        students_list.append({
+            'info': data['info'],
+            'completed': data['completed'],
+            'total': total_lessons,
+            'progress_percent': round(progress_percent, 1),
+            'avg_score': round(avg_score, 1),
+            'lessons_detail': data['lessons_detail']
+        })
+    
+    # Sắp xếp theo tiến độ
+    students_list.sort(key=lambda x: (-x['progress_percent'], -x['avg_score']))
+    
+    return render_template('teacher_view_students.html',
+                         course=course,
+                         students=students_list,
+                         total_lessons=total_lessons)
+
+@app.route('/teacher/student/<student_id>/detail')
+@teacher_required
+def teacher_student_detail(student_id):
+    """Xem chi tiết tiến độ 1 học sinh qua các khóa học"""
+    courses_data = load_json("courses.json")
+    users_data = load_json("users.json")
+    teacher_id = session.get('user_id')
+    
+    # Lấy thông tin học sinh
+    student = next((s for s in users_data.get('students', []) 
+                   if s['id'] == student_id), None)
+    
+    if not student:
+        flash("Không tìm thấy học sinh!", "error")
+        return redirect(url_for('teacher_dashboard'))
+    
+    # Lấy các khóa học của giáo viên
+    my_courses = [c for c in courses_data.get('courses', []) 
+                  if c['teacher_id'] == teacher_id]
+    
+    # Lấy tiến độ học sinh trong các khóa học của giáo viên
+    student_progress = [p for p in courses_data.get('student_progress', []) 
+                       if p['student_id'] == student_id 
+                       and any(c['id'] == p['course_id'] for c in my_courses)]
+    
+    # Nhóm theo khóa học
+    courses_detail = []
+    for course in my_courses:
+        lessons = [l for l in courses_data.get('lessons', []) 
+                  if l['course_id'] == course['id']]
+        course_progress = [p for p in student_progress 
+                          if p['course_id'] == course['id']]
+        
+        if course_progress:  # Chỉ hiển thị khóa học mà học sinh đã tham gia
+            total = len(lessons)
+            completed = len([p for p in course_progress if p['completed']])
+            avg_score = sum(p.get('score', 0) for p in course_progress) / total if total > 0 else 0
+            
+            courses_detail.append({
+                'course': course,
+                'total': total,
+                'completed': completed,
+                'progress_percent': round(completed / total * 100, 1) if total > 0 else 0,
+                'avg_score': round(avg_score, 1),
+                'lessons_progress': course_progress
+            })
+    
+    return render_template('teacher_student_detail.html',
+                         student=student,
+                         courses=courses_detail)
+
+
+
+@app.route('/api/courses')
+def api_get_courses():
+    """API lấy danh sách khóa học"""
+    courses_data = load_json("courses.json")
+    subject = request.args.get('subject', '')
+    
+    courses = courses_data.get('courses', [])
+    
+    if subject:
+        courses = [c for c in courses if c['subject'] == subject]
+    
+    return jsonify({'success': True, 'courses': courses})
+
+@app.route('/api/student/progress')
+@login_required
+def api_student_progress():
+    """API lấy tiến độ học sinh"""
+    if session.get('role') != 'student':
+        return jsonify({'success': False, 'message': 'Unauthorized'}), 403
+    
+    courses_data = load_json("courses.json")
+    student_id = session.get('user_id')
+    
+    progress = [p for p in courses_data.get('student_progress', []) 
+               if p['student_id'] == student_id]
+    
+    return jsonify({'success': True, 'progress': progress})
+
+@app.route('/api/teacher/statistics')
+@teacher_required
+def api_teacher_statistics():
+    """API thống kê cho giáo viên"""
+    courses_data = load_json("courses.json")
+    teacher_id = session.get('user_id')
+    
+    my_courses = [c for c in courses_data.get('courses', []) 
+                  if c['teacher_id'] == teacher_id]
+    course_ids = [c['id'] for c in my_courses]
+    
+    all_progress = courses_data.get('student_progress', [])
+    relevant_progress = [p for p in all_progress if p['course_id'] in course_ids]
+    
+    # Thống kê
+    total_courses = len(my_courses)
+    total_students = len(set(p['student_id'] for p in relevant_progress))
+    total_lessons = sum(len([l for l in courses_data.get('lessons', []) 
+                            if l['course_id'] == c['id']]) for c in my_courses)
+    avg_completion = sum(1 for p in relevant_progress if p['completed']) / len(relevant_progress) * 100 if relevant_progress else 0
+    
+    return jsonify({
+        'success': True,
+        'statistics': {
+            'total_courses': total_courses,
+            'total_students': total_students,
+            'total_lessons': total_lessons,
+            'avg_completion': round(avg_completion, 1)
+        }
+    })
 @app.errorhandler(404)
 def not_found(e):
     return render_template('404.html'), 404
@@ -1081,13 +1948,33 @@ def not_found(e):
 def server_error(e):
     return render_template('500.html'), 500
 
+def initialize_data():
+    """Khởi tạo tất cả file dữ liệu cần thiết"""
+    init_users()
+    init_courses()
+    
+    
+    print("\n" + "="*70)
+    print("THÔNG TIN TÀI KHOẢN GIÁO VIÊN MẶC ĐỊNH:")
+    print("="*70)
+    users_data = load_json("users.json")
+    for teacher in users_data.get('teachers', []):
+        print(f"Username: {teacher['username']} | Password: 123456 | Môn: {teacher['subject']}")
+    print("="*70)
+    print("Học sinh có thể đăng ký tài khoản mới tại /register")
+    print("="*70 + "\n")
+
+
 if __name__ == '__main__':
+    # Khởi tạo dữ liệu
+    initialize_data()
+    
+    # Các phần còn lại giữ nguyên...
     for filename in ["data.json", "game.json"]:
         if not os.path.exists(filename):
             print(f"Tạo file {filename}...")
             save_json(filename, {"players": []})
     
-    # Tạo thư mục data nếu chưa có
     if not os.path.exists(PDF_FOLDER):
         os.makedirs(PDF_FOLDER)
         print(f"Đã tạo thư mục {PDF_FOLDER} để chứa file PDF")
@@ -1102,3 +1989,4 @@ if __name__ == '__main__':
     print('=' * 70)
     
     app.run(debug=True, host='0.0.0.0', port=port)
+

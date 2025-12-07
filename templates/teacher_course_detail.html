@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ course.title }} - Quản lý khóa học</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .course-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        .course-info-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .lessons-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .lesson-card {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .lesson-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateX(5px);
+        }
+        .lesson-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .btn-add-lesson {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        .btn-add-lesson:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        .empty-lessons {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        .empty-lessons i {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+        .stat-box h3 {
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        .video-badge {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        .video-youtube {
+            background: #ffe6e6;
+            color: #ff0000;
+        }
+        .video-drive {
+            background: #e6f4ff;
+            color: #1a73e8;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/teacher/dashboard">
+                <i class="fas fa-chalkboard-teacher me-2"></i>HỌC VUI - Giáo viên
+            </a>
+            <div class="ms-auto">
+                <a href="/teacher/dashboard" class="btn btn-light btn-sm">
+                    <i class="fas fa-arrow-left me-1"></i>Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Course Header -->
+    <div class="course-header">
+        <div class="container">
+            <nav aria-label="breadcrumb" class="mb-3">
+                <ol class="breadcrumb" style="background: transparent;">
+                    <li class="breadcrumb-item">
+                        <a href="/teacher/dashboard" class="text-white">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active text-white">{{ course.title }}</li>
+                </ol>
+            </nav>
+            <h2><i class="fas fa-book-open me-2"></i>{{ course.title }}</h2>
+            <p class="mb-0">Quản lý bài học và nội dung khóa học</p>
+        </div>
+    </div>
+
+    <div class="container mb-5">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Course Info -->
+        <div class="course-info-card">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h4 class="mb-3">Thông tin khóa học</h4>
+                    <p class="text-muted mb-2">
+                        <i class="fas fa-tag me-2"></i><strong>Môn học:</strong> 
+                        <span class="badge bg-primary">{{ course.subject|upper }}</span>
+                    </p>
+                    <p class="text-muted mb-2">
+                        <i class="fas fa-user me-2"></i><strong>Giáo viên:</strong> {{ course.teacher_name }}
+                    </p>
+                    <p class="text-muted mb-2">
+                        <i class="fas fa-calendar me-2"></i><strong>Ngày tạo:</strong> {{ course.created_at }}
+                    </p>
+                    {% if course.description %}
+                    <p class="text-muted mb-0">
+                        <i class="fas fa-info-circle me-2"></i><strong>Mô tả:</strong> {{ course.description }}
+                    </p>
+                    {% endif %}
+                </div>
+                <div class="col-md-4">
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <div class="stat-box">
+                                <h3>{{ lessons|length }}</h3>
+                                <small class="text-muted">Bài học</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="stat-box">
+                                <h3>0</h3>
+                                <small class="text-muted">Học sinh</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2 mt-3">
+                        <a href="/teacher/course/{{ course.id }}/students" class="btn btn-outline-primary">
+                            <i class="fas fa-users me-2"></i>Xem học sinh
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lessons Section -->
+        <div class="lessons-container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0">
+                    <i class="fas fa-list me-2"></i>Danh sách bài học
+                </h4>
+                <a href="/teacher/course/{{ course.id }}/lesson/create" class="btn btn-add-lesson">
+                    <i class="fas fa-plus-circle me-2"></i>Thêm bài học mới
+                </a>
+            </div>
+
+            {% if lessons %}
+                <div class="lessons-list">
+                    {% for lesson in lessons %}
+                    <div class="lesson-card">
+                        <div class="d-flex align-items-center gap-3">
+                            <!-- Lesson Number -->
+                            <div class="lesson-number">
+                                {{ lesson.order }}
+                            </div>
+
+                            <!-- Lesson Info -->
+                            <div class="flex-grow-1">
+                                <h5 class="mb-1">{{ lesson.title }}</h5>
+                                <div class="d-flex gap-2 align-items-center flex-wrap">
+                                    {% if lesson.video_link %}
+                                    <span class="video-badge video-youtube">
+                                        <i class="fab fa-youtube me-1"></i>YouTube
+                                    </span>
+                                    {% endif %}
+                                    {% if lesson.document_link %}
+                                    <span class="video-badge video-drive">
+                                        <i class="fab fa-google-drive me-1"></i>Google Drive
+                                    </span>
+                                    {% endif %}
+                                    {% if lesson.quiz %}
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-question-circle me-1"></i>{{ lesson.quiz|length }} câu hỏi
+                                    </span>
+                                    {% endif %}
+                                    <small class="text-muted">
+                                        <i class="fas fa-clock me-1"></i>{{ lesson.created_at }}
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="d-flex gap-2">
+                                <a href="/teacher/lesson/{{ lesson.id }}/edit" 
+                                   class="btn btn-sm btn-outline-primary"
+                                   title="Chỉnh sửa">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button type="button" 
+                                        class="btn btn-sm btn-outline-danger"
+                                        onclick="confirmDelete('{{ lesson.id }}', '{{ lesson.title }}')"
+                                        title="Xóa">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-lessons">
+                    <i class="fas fa-book-open"></i>
+                    <h5>Chưa có bài học nào</h5>
+                    <p class="text-muted mb-4">Bắt đầu tạo bài học đầu tiên cho khóa học này!</p>
+                    <a href="/teacher/course/{{ course.id }}/lesson/create" class="btn btn-add-lesson">
+                        <i class="fas fa-plus-circle me-2"></i>Tạo bài học đầu tiên
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-exclamation-triangle text-danger me-2"></i>Xác nhận xóa
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có chắc chắn muốn xóa bài học:</p>
+                    <p class="fw-bold" id="lessonTitle"></p>
+                    <p class="text-danger">Hành động này không thể hoàn tác!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <form id="deleteForm" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash me-1"></i>Xác nhận xóa
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function confirmDelete(lessonId, lessonTitle) {
+            document.getElementById('lessonTitle').textContent = lessonTitle;
+            document.getElementById('deleteForm').action = '/teacher/lesson/' + lessonId + '/delete';
+            
+            const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            modal.show();
+        }
+    </script>
+</body>
+</html>
