@@ -88,10 +88,23 @@
         }
 
         .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 30px;
             padding: 20px 0;
+        }
+
+        .row {
+            display: grid;
+            gap: 30px;
+        }
+
+        .row-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .row-2 {
+            grid-template-columns: repeat(2, 1fr);
         }
 
         .card {
@@ -196,7 +209,7 @@
                 font-size: 2em;
             }
 
-            .grid {
+            .row-3, .row-2 {
                 grid-template-columns: 1fr;
             }
 
@@ -233,50 +246,57 @@
         </div>
 
         <div class="grid">
-            <!-- HỌC VUI - Chức năng mới -->
+            <!-- Hàng 1: 3 items -->
+            <div class="row row-3">
+                <a href="/chatbot" class="card">
+                    <span class="card-icon">🤖</span>
+                    <div class="card-title">Chatbot AI</div>
+                    <div class="card-desc">Trợ lý AI hướng dẫn giải bài tập chi tiết từng bước</div>
+                </a>
 
-            <a href="/chatbot" class="card">
-                <span class="card-icon">🤖</span>
-                <div class="card-title">Chatbot AI</div>
-                <div class="card-desc">Trợ lý AI hướng dẫn giải bài tập chi tiết từng bước</div>
-            </a>
-             <a href="/stem" class="card">
-                <span class="card-icon">🔬</span>
-                <div class="card-title">Thí nghiệm ảo</div>
-                <div class="card-desc">Những thí nghiệm vật lí bổ ích cho các bạn</div>
-            </a>
+                <a href="/stem" class="card">
+                    <span class="card-icon">🔬</span>
+                    <div class="card-title">Thí nghiệm ảo</div>
+                    <div class="card-desc">Những thí nghiệm vật lí bổ ích cho các bạn</div>
+                </a>
 
-             <a href="/quiz" class="card">
-                <span class="card-icon">🎮</span>
-                <div class="card-title">Game học tập</div>
-                <div class="card-desc">Trắc nghiệm vui nhộn với bảng xếp hạng và thời gian</div>
-            </a>
-            <a href="/test" class="card">
-                <span class="card-icon">📝</span>
-                <div class="card-title">Trắc nghiệm thông minh</div>
-                <div class="card-desc">Làm bài kiểm tra và xem kết quả chi tiết ngay lập tức</div>
-            </a>
-            <a href="/materials" class="card">
-                <span class="card-icon">📚</span>
-                <div class="card-title">Kho tài liệu</div>
-                <div class="card-desc">Tài liệu học tập đầy đủ các môn Toán, Lý, Hóa, Sinh</div>
-            </a>
-             <a href="/advisor" class="card">
-                <span class="card-icon">💡</span>
-                <div class="card-title">Tư vấn học tập</div>
-                <div class="card-desc">AI tư vấn lộ trình học tập cá nhân hóa phù hợp với bạn</div>
-            </a>
+                <a href="/quiz" class="card">
+                    <span class="card-icon">🎮</span>
+                    <div class="card-title">Game học tập</div>
+                    <div class="card-desc">Trắc nghiệm vui nhộn với bảng xếp hạng và thời gian</div>
+                </a>
+            </div>
 
+            <!-- Hàng 2: 2 items -->
+            <div class="row row-2">
+                <a href="/test" class="card">
+                    <span class="card-icon">📝</span>
+                    <div class="card-title">Trắc nghiệm thông minh</div>
+                    <div class="card-desc">Làm bài kiểm tra và xem kết quả chi tiết ngay lập tức</div>
+                </a>
 
+                <a href="/materials" class="card">
+                    <span class="card-icon">📚</span>
+                    <div class="card-title">Kho tài liệu</div>
+                    <div class="card-desc">Tài liệu học tập đầy đủ các môn Toán, Lý, Hóa, Sinh</div>
+                </a>
+            </div>
 
-            <a href="/student/dashboard" class="card">
-                <span class="new-badge">🔥 MỚI</span>
-                <span class="card-icon">🎯</span>
-                <div class="card-title">Bài tập từ giáo viên</div>
-                <div class="card-desc">Nhận bài tập từ giáo viên, làm và nộp trực tuyến để giáo viên theo dõi tiến độ và kết quả.</div>
-            </a>
+            <!-- Hàng 3: 2 items -->
+            <div class="row row-2">
+                <a href="/advisor" class="card">
+                    <span class="card-icon">💡</span>
+                    <div class="card-title">Tư vấn học tập</div>
+                    <div class="card-desc">AI tư vấn lộ trình học tập cá nhân hóa phù hợp với bạn</div>
+                </a>
 
-            
+                <a href="/student/dashboard" class="card">
+                    <span class="new-badge">🔥 MỚI</span>
+                    <span class="card-icon">🎯</span>
+                    <div class="card-title">Bài tập từ giáo viên</div>
+                    <div class="card-desc">Nhận bài tập từ giáo viên, làm và nộp trực tuyến để giáo viên theo dõi tiến độ và kết quả.</div>
+                </a>
+            </div>
         </div>
     </div>
 
