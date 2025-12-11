@@ -21,7 +21,6 @@ app = Flask(__name__)
 
 app.secret_key = 'f8d4e3b2a9c7f1e6d5b8a3c2f9e7d4b1a8c5f2e9d6b3a7f4e1c8b5d2f9a6e3c'
 
-app = Flask(__name__)
 # Thư mục chứa file PDF
 PDF_FOLDER = "data"
 
