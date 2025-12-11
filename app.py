@@ -8,15 +8,20 @@ import secrets
 import PyPDF2
 from functools import wraps
 import hashlib
+from dotenv import load_dotenv
 
-API_KEY = "AIzaSyDsN-HoFzthjs4tU2qjLLf5mjLB6gpDSA8"
-### AIzaSyCrRZJ4eU0deN29HhqVaxoLiO8oLszC1-o
+load_dotenv()
+
+# Sử dụng API key từ biến môi trường
+API_KEY = os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=API_KEY)
-model = genai.GenerativeModel("gemini-2.0-flash")
+model = genai.GenerativeModel("gemini-2.5-flash")
 
 app = Flask(__name__)
-app.secret_key = secrets.token_hex(32)
 
+app.secret_key = 'f8d4e3b2a9c7f1e6d5b8a3c2f9e7d4b1a8c5f2e9d6b3a7f4e1c8b5d2f9a6e3c'
+
+app = Flask(__name__)
 # Thư mục chứa file PDF
 PDF_FOLDER = "data"
 
@@ -755,30 +760,22 @@ def stem():
                 "phet_url": "https://phet.colorado.edu/sims/html/forces-and-motion-basics/latest/forces-and-motion-basics_all.html"
             }
         ],
-        "Hóa": [
+       "Hóa": [
             {
                 "id": "build_molecule",
                 "title": "Xây dựng phân tử",
                 "category": "Hóa học phân tử",
                 "desc": "Tạo các phân tử từ nguyên tử, tìm hiểu về liên kết hóa học",
                 "difficulty": "Dễ",
-                "phet_url": "https://phet.colorado.edu/sims/html/build-a-molecule/latest/build-a-molecule_all.html"
+                "phet_url": "https://phet.colorado.edu/sims/html/build-a-molecule/latest/build-a-molecule_all.html?locale=vi"
             },
             {
-                "id": "balancing_equations",
-                "title": "Cân bằng phương trình hóa học",
-                "category": "Phản ứng hóa học",
-                "desc": "Luyện tập cân bằng các phương trình hóa học theo định luật bảo toàn khối lượng",
-                "difficulty": "Trung bình",
-                "phet_url": "https://phet.colorado.edu/vi/simulations/balancing-chemical-equations"
-            },
-            {
-                "id": "states_of_matter",
-                "title": "Trạng thái vật chất",
-                "category": "Hóa lý",
-                "desc": "Khám phá ba trạng thái của vật chất: rắn, lỏng, khí và sự chuyển pha",
+                "id": "build_atom",
+                "title": "Xây dựng nguyên tử",
+                "category": "Cấu tạo nguyên tử",
+                "desc": "Tìm hiểu cấu tạo nguyên tử, proton, neutron và electron",
                 "difficulty": "Dễ",
-                "phet_url": "https://phet.colorado.edu/sims/html/states-of-matter-basics/latest/states-of-matter-basics_all.html"
+                "phet_url": "https://phet.colorado.edu/sims/html/build-an-atom/latest/build-an-atom_all.html?locale=vi"
             }
         ],
         "Sinh": [
