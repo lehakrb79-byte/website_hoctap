@@ -522,7 +522,7 @@ def leaderboard():
                          players=top_players,
                          current_score=current_score,
                          current_total=current_total)
-
+########################################################################################################3
 @app.route('/materials')
 def materials():
     materials_data = {
@@ -536,7 +536,7 @@ def materials():
             {
                 "title": "Điện học cơ bản",
                 "type": "video",
-                "link": "https://www.youtube.com/embed/VIDEO_ID",
+                "link": "https://www.youtube.com/embed/RGfQuH2egDlgAOwo",
                 "description": "Video giải thích định luật Ohm"
             },
             {
