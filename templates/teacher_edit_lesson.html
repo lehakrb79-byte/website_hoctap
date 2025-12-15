@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chỉnh sửa bài học - {{ lesson.title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f39c12;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --dark-bg: #2c3e50;
+            --light-bg: #ecf0f1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .main-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .form-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-header h2 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--dark-bg);
+            margin-bottom: 8px;
+        }
+
+        .form-control,
+        .form-select {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px 15px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), #357abd);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 30px 0 20px 0;
+            font-weight: 600;
+        }
+
+        .quiz-question {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .quiz-question-number {
+            background: var(--primary-color);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            position: absolute;
+            top: -15px;
+            left: 20px;
+        }
+
+        .option-group {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .option-label {
+            background: var(--primary-color);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .alert {
+            border-radius: 10px;
+            border: none;
+            padding: 15px 20px;
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        .video-type-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .video-type-toggle label {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background: #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .video-type-toggle input[type="radio"]:checked+label {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .video-type-toggle input[type="radio"] {
+            display: none;
+        }
+
+        #addQuestionBtn {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <a href="{{ url_for('teacher_course_detail', course_id=course.id) }}" class="back-link">
+            <i class="bi bi-arrow-left"></i> Quay lại chi tiết khóa học
+        </a>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show"
+            role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <div class="form-card">
+            <div class="form-header">
+                <h2><i class="bi bi-pencil-square"></i> Chỉnh sửa bài học</h2>
+                <p class="mb-0 mt-2">Khóa học: {{ course.name }}</p>
+            </div>
+
+            <form method="POST" id="editLessonForm">
+                <!-- Tên bài học -->
+                <div class="mb-4">
+                    <label for="title" class="form-label">
+                        <i class="bi bi-book"></i> Tên bài học <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="title" name="title" value="{{ lesson.title }}" required>
+                </div>
+
+                <!-- Loại video -->
+                <div class="mb-4">
+                    <label class="form-label">
+                        <i class="bi bi-play-circle"></i> Loại nội dung video
+                    </label>
+                    <div class="video-type-toggle">
+                        <input type="radio" id="youtube" name="video_type" value="youtube" {% if
+                            lesson.video_type=='youtube' %}checked{% endif %}>
+                        <label for="youtube">
+                            <i class="bi bi-youtube"></i> YouTube
+                        </label>
+
+                        <input type="radio" id="drive" name="video_type" value="drive" {% if lesson.video_type=='drive'
+                            %}checked{% endif %}>
+                        <label for="drive">
+                            <i class="bi bi-cloud"></i> Google Drive
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Link YouTube -->
+                <div class="mb-4" id="youtubeSection"
+                    style="display: {% if lesson.video_type == 'youtube' %}block{% else %}none{% endif %};">
+                    <label for="video_link" class="form-label">
+                        <i class="bi bi-link-45deg"></i> Link YouTube
+                    </label>
+                    <input type="text" class="form-control" id="video_link" name="video_link"
+                        value="{{ lesson.video_link if lesson.video_type == 'youtube' else '' }}"
+                        placeholder="https://www.youtube.com/watch?v=...">
+                    <small class="text-muted">Dán link video YouTube vào đây</small>
+                </div>
+
+                <!-- Link Google Drive -->
+                <div class="mb-4" id="driveSection"
+                    style="display: {% if lesson.video_type == 'drive' %}block{% else %}none{% endif %};">
+                    <label for="document_link" class="form-label">
+                        <i class="bi bi-link-45deg"></i> Link Google Drive
+                    </label>
+                    <input type="text" class="form-control" id="document_link" name="document_link"
+                        value="{{ lesson.document_link if lesson.video_type == 'drive' else '' }}"
+                        placeholder="https://drive.google.com/file/d/...">
+                    <small class="text-muted">Dán link file từ Google Drive vào đây</small>
+                </div>
+
+                <!-- Nội dung bài học -->
+                <div class="mb-4">
+                    <label for="content" class="form-label">
+                        <i class="bi bi-file-text"></i> Nội dung bài học
+                    </label>
+                    <textarea class="form-control" id="content" name="content" rows="8"
+                        placeholder="Nhập nội dung chi tiết của bài học...">{{ lesson.content }}</textarea>
+                </div>
+
+                <!-- Câu hỏi trắc nghiệm -->
+                <div class="section-header">
+                    <i class="bi bi-question-circle"></i> Câu hỏi trắc nghiệm
+                </div>
+
+                <div id="quizContainer">
+                    {% if lesson.quiz %}
+                    {% for quiz_item in lesson.quiz %}
+                    <div class="quiz-question">
+                        <div class="quiz-question-number">{{ loop.index }}</div>
+
+                        <div class="mb-3" style="margin-top: 10px;">
+                            <label class="form-label">Câu hỏi:</label>
+                            <input type="text" class="form-control" name="question_{{ loop.index0 }}"
+                                value="{{ quiz_item.question }}" placeholder="Nhập câu hỏi...">
+                        </div>
+
+                        <div class="option-group">
+                            <div class="option-label">A</div>
+                            <input type="text" class="form-control" name="option_A_{{ loop.index0 }}"
+                                value="{{ quiz_item.A }}" placeholder="Đáp án A">
+                        </div>
+
+                        <div class="option-group">
+                            <div class="option-label">B</div>
+                            <input type="text" class="form-control" name="option_B_{{ loop.index0 }}"
+                                value="{{ quiz_item.B }}" placeholder="Đáp án B">
+                        </div>
+
+                        <div class="option-group">
+                            <div class="option-label">C</div>
+                            <input type="text" class="form-control" name="option_C_{{ loop.index0 }}"
+                                value="{{ quiz_item.C }}" placeholder="Đáp án C">
+                        </div>
+
+                        <div class="option-group">
+                            <div class="option-label">D</div>
+                            <input type="text" class="form-control" name="option_D_{{ loop.index0 }}"
+                                value="{{ quiz_item.D }}" placeholder="Đáp án D">
+                        </div>
+
+                        <div class="mt-3">
+                            <label class="form-label">Đáp án đúng:</label>
+                            <select class="form-select" name="answer_{{ loop.index0 }}">
+                                <option value="A" {% if quiz_item.answer=='A' %}selected{% endif %}>A</option>
+                                <option value="B" {% if quiz_item.answer=='B' %}selected{% endif %}>B</option>
+                                <option value="C" {% if quiz_item.answer=='C' %}selected{% endif %}>C</option>
+                                <option value="D" {% if quiz_item.answer=='D' %}selected{% endif %}>D</option>
+                            </select>
+                        </div>
+
+                        <button type="button" class="btn btn-danger btn-sm mt-3 remove-question">
+                            <i class="bi bi-trash"></i> Xóa câu hỏi
+                        </button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+
+                <button type="button" class="btn btn-success" id="addQuestionBtn">
+                    <i class="bi bi-plus-circle"></i> Thêm câu hỏi
+                </button>
+
+                <!-- Buttons -->
+                <div class="d-flex gap-3 mt-4">
+                    <button type="submit" class="btn btn-primary flex-fill">
+                        <i class="bi bi-save"></i> Cập nhật bài học
+                    </button>
+                    <a href="{{ url_for('teacher_course_detail', course_id=course.id) }}" class="btn btn-secondary">
+                        <i class="bi bi-x-circle"></i> Hủy
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle video type
+        document.querySelectorAll('input[name="video_type"]').forEach(radio => {
+            radio.addEventListener('change', function () {
+                if (this.value === 'youtube') {
+                    document.getElementById('youtubeSection').style.display = 'block';
+                    document.getElementById('driveSection').style.display = 'none';
+                } else {
+                    document.getElementById('youtubeSection').style.display = 'none';
+                    document.getElementById('driveSection').style.display = 'block';
+                }
+            });
+        });
+
+        // Add new question
+        let questionCount = {{lesson.quiz| length if lesson.quiz else 0 }};
+
+        document.getElementById('addQuestionBtn').addEventListener('click', function () {
+            const quizContainer = document.getElementById('quizContainer');
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'quiz-question';
+            questionDiv.innerHTML = `
+                <div class="quiz-question-number">${questionCount + 1}</div>
+
+                <div class="mb-3" style="margin-top: 10px;">
+                    <label class="form-label">Câu hỏi:</label>
+                    <input type="text" class="form-control" name="question_${questionCount}" 
+                           placeholder="Nhập câu hỏi...">
+                </div>
+
+                <div class="option-group">
+                    <div class="option-label">A</div>
+                    <input type="text" class="form-control" name="option_A_${questionCount}" 
+                           placeholder="Đáp án A">
+                </div>
+
+                <div class="option-group">
+                    <div class="option-label">B</div>
+                    <input type="text" class="form-control" name="option_B_${questionCount}" 
+                           placeholder="Đáp án B">
+                </div>
+
+                <div class="option-group">
+                    <div class="option-label">C</div>
+                    <input type="text" class="form-control" name="option_C_${questionCount}" 
+                           placeholder="Đáp án C">
+                </div>
+
+                <div class="option-group">
+                    <div class="option-label">D</div>
+                    <input type="text" class="form-control" name="option_D_${questionCount}" 
+                           placeholder="Đáp án D">
+                </div>
+
+                <div class="mt-3">
+                    <label class="form-label">Đáp án đúng:</label>
+                    <select class="form-select" name="answer_${questionCount}">
+                        <option value="">-- Chọn đáp án --</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                    </select>
+                </div>
+
+                <button type="button" class="btn btn-danger btn-sm mt-3 remove-question">
+                    <i class="bi bi-trash"></i> Xóa câu hỏi
+                </button>
+            `;
+
+            quizContainer.appendChild(questionDiv);
+            questionCount++;
+
+            // Add remove event to the new question
+            questionDiv.querySelector('.remove-question').addEventListener('click', function () {
+                questionDiv.remove();
+                updateQuestionNumbers();
+            });
+        });
+
+        // Remove question
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-question') ||
+                e.target.closest('.remove-question')) {
+                const btn = e.target.classList.contains('remove-question') ?
+                    e.target : e.target.closest('.remove-question');
+                btn.closest('.quiz-question').remove();
+                updateQuestionNumbers();
+            }
+        });
+
+        // Update question numbers after removal
+        function updateQuestionNumbers() {
+            const questions = document.querySelectorAll('.quiz-question');
+            questions.forEach((q, index) => {
+                q.querySelector('.quiz-question-number').textContent = index + 1;
+            });
+        }
+
+        // Form validation
+        document.getElementById('editLessonForm').addEventListener('submit', function (e) {
+            const title = document.getElementById('title').value.trim();
+
+            if (!title) {
+                e.preventDefault();
+                alert('Vui lòng nhập tên bài học!');
+                return;
+            }
+
+            // Validate quiz questions
+            const questions = document.querySelectorAll('.quiz-question');
+            for (let i = 0; i < questions.length; i++) {
+                const questionInput = questions[i].querySelector('input[name^="question_"]');
+                const optionA = questions[i].querySelector('input[name^="option_A_"]');
+                const optionB = questions[i].querySelector('input[name^="option_B_"]');
+                const optionC = questions[i].querySelector('input[name^="option_C_"]');
+                const optionD = questions[i].querySelector('input[name^="option_D_"]');
+                const answer = questions[i].querySelector('select[name^="answer_"]');
+
+                if (questionInput.value.trim()) {
+                    if (!optionA.value.trim() || !optionB.value.trim() ||
+                        !optionC.value.trim() || !optionD.value.trim()) {
+                        e.preventDefault();
+                        alert(`Câu hỏi ${i + 1}: Vui lòng nhập đủ 4 đáp án!`);
+                        return;
+                    }
+
+                    if (!answer.value) {
+                        e.preventDefault();
+                        alert(`Câu hỏi ${i + 1}: Vui lòng chọn đáp án đúng!`);
+                        return;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
